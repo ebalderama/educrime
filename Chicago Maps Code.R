@@ -16,35 +16,33 @@ library(geosphere)
 #Contain crimes to one year, for each school find the distance to each crime only in that
 #district
 
-#School Points (don't know how to use currently)
-school.points<-readOGR("C:/Users/Nick Fox/Downloads/Chicago Public Schools - School Locations SY1516/geo_export_f320fa53-03a6-45f3-9902-b49e8a1f3f1b.shp")
 
 #Elementary Schools
-account.elem<-read_excel("D:/Downloads/Accountability_SQRPratings_2016-2017_SchoolLevel.xls",sheet=2,skip=1)
+account.elem<-read_excel("Accountability_SQRPratings_2016-2017_SchoolLevel.xls",sheet=2,skip=1)
 account.elem$SchoolID<-account.elem$`School ID`
 
 #High Schools
-account.high<-read_excel("D:/Downloads/Accountability_SQRPratings_2016-2017_SchoolLevel.xls",sheet=3,skip=1)
+account.high<-read_excel("Accountability_SQRPratings_2016-2017_SchoolLevel.xls",sheet=3,skip=1)
 account.high$SchoolID<-account.high$`School ID`
 
 #Combination Schools
-account.combo<-read_excel("D:/Downloads/Accountability_SQRPratings_2016-2017_SchoolLevel.xls",sheet=4,skip=2)
+account.combo<-read_excel("Accountability_SQRPratings_2016-2017_SchoolLevel.xls",sheet=4,skip=2)
 account.combo$SchoolID<-account.combo$`School ID`
 
 #Option Schools
-account.option<-read_excel("D:/Downloads/Accountability_SQRPratings_2016-2017_SchoolLevel.xls",sheet=3,skip=1)
+account.option<-read_excel("Accountability_SQRPratings_2016-2017_SchoolLevel.xls",sheet=3,skip=1)
 account.option$SchoolID<-account.option$`School ID`
 
 #ZIP code shape file
-zips<-readOGR("C:/Users/Nick/Dropbox/CPS Spatial/Boundaries - ZIP Codes/geo_export_f32b5a2b-4f79-41c5-8654-e2587746d820.shp","geo_export_f32b5a2b-4f79-41c5-8654-e2587746d820")
+zips<-readOGR("Boundaries - ZIP Codes/geo_export_f32b5a2b-4f79-41c5-8654-e2587746d820.shp","geo_export_f32b5a2b-4f79-41c5-8654-e2587746d820")
 poly.df<-tidy(zips,region="zip")
 
 #School District Shapefiles
-dists<-readOGR("D:/CPS Geographic Networks/geo_export_99bc1f97-7a71-4da1-829c-48549be68f20.shp","geo_export_99bc1f97-7a71-4da1-829c-48549be68f20")
+dists<-readOGR("CPS Geographic Networks/geo_export_99bc1f97-7a71-4da1-829c-48549be68f20.shp","geo_export_99bc1f97-7a71-4da1-829c-48549be68f20")
 poly.dist<-tidy(dists,region="network_nu")
 
 #School locations
-schools<-read.csv("C:/Users/Nick/Dropbox/CPS Spatial/CPS_Schools_2013-2014_Academic_Year.csv")
+schools<-read.csv("CPS_Schools_2013-2014_Academic_Year.csv")
 
 #Crime data
 crimes2015<-read.csv("C:/Users/Nick/Dropbox/CPS Spatial/Crimes_-_2015.csv")
@@ -70,9 +68,9 @@ chimap<-get_map(location="Chicago",zoom=10,scale="auto",maptype="terrain")
 
 #Elementary School Map using ZIP codes
 ggmap(chimap) + 
-  geom_path(aes(x=long, y=lat, group=group), data=poly.dist) +
+  geom_path(aes(x=long, y=lat, group=group), data=poly.df) +
   geom_point(aes(x=Longitude,y=Latitude, color=Total.Points), alpha=.5,data=elem.df) + 
-  scale_color_gradient2(limits=c(1,5), mid="yellow",high="purple4")+
+  scale_color_gradient2(limits=c(1,5), low="white" , mid="yellow",high="purple4")+
   scale_x_continuous(limits = c(-87.96,-87.5), expand = c(0, 0)) +
   scale_y_continuous(limits = c(41.64,42.05), expand = c(0, 0)) 
 
