@@ -53,6 +53,8 @@ crimes2015<-read.csv("C:/Users/Nick/Dropbox/CPS Spatial/Crimes_-_2015.csv")
 elem.df<-merge(schools, account.elem, by="SchoolID")
 elem.df$Total.Points<-elem.df$`SQRP Total Points Earned`
 
+
+
 #Final high school data
 high.df<-merge(schools, account.high, by="SchoolID")
 high.df$Total.Points<-high.df$`SQRP Total Points Earned`
@@ -135,10 +137,10 @@ ggmap(chimap) +
 
 #Finds the distances from a set of crimes to a couple schools
 #Goal is to apply this more widely across crimes and schools
-crimes_test<-cbind(crimes2015$Longitude[3:23],crimes2015$Latitude[3:23])
-school_test<-cbind(schools$Longitude[5:6],schools$Latitude[5:6])
+homicide_data<-crimes2015[crimes2015$Primary.Type=="HOMICIDE",c(21,20)]
+school_coords<-cbind(schools$Longitude,schools$Latitude)
 
-crime_distances<-distm(school_test,crimes_test,fun=distVincentyEllipsoid)
+crime_distances<-distm(school_coords,homicide_data,fun=distVincentyEllipsoid)
 
 dist_conv<-function(x){
   x_km<-x/1000
@@ -146,6 +148,7 @@ dist_conv<-function(x){
 }
 crimes_distances_miles<-apply(crime_distances,1,dist_conv)
 
+homicide_distances<-apply(crime_distances,1,dist_conv)
 
 #Attempts to use over to find aggregates
 xy<-cbind(elem.df$Longitude,elem.df$Latitude)
