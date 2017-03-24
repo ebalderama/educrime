@@ -396,11 +396,9 @@
 	
 \begin{itemize}
 		\item \textbf{Need:} Effective modeling methods for \red{zero-inflated} and/or \red{over-dispersed} count data.
-		\begin{center}
-			\vspace{-0.5cm}
-		\end{center}
-        \item \textbf{Goal:} Develop a package of user-friendly functions, utilizing \red{MCMC sampling}, that will best model problematic count data that cannot be fit to any typical distribution.
-	\end{itemize}
+		\vspace{0.75cm}
+    \item \textbf{Goal:} Develop a package of user-friendly functions, utilizing \red{MCMC sampling}, that will best model problematic count data that cannot be fit to any typical distribution.
+\end{itemize}
 	%\begin{center}
 	\vspace{-0.25cm}
 	%\end{center}
@@ -631,14 +629,14 @@
 	%\item 
 	{\bf Likelihood of observing count $y_{i}$:}
 	%\end{itemize}
-	\beqx
+	\begin{equation*}
 	f(y_{i} | \blue{\btheta}) = 
 	\begin{cases}
 		\blue{p_{i}}, &  y_{i}=0,\\
 		{[1-p_{i}] \cdot\NB(\blue{\mu_{i}}, r)}, & 1\le y_{ij} < \psi,\\
 
 	\end{cases}
-	\eeqx
+	\end{equation*}
 	
 	\begin{itemize}
 		\item \red{Double-Hurdle modeling} may account for both excessive \red{zero-inflation} and extreme \red{over-dispersion}.
