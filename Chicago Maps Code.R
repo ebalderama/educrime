@@ -1,4 +1,5 @@
 library(readxl)
+library(gdata)
 
 library(sp)
 library(spdep)
@@ -13,25 +14,26 @@ library(RColorBrewer)
 library(dplyr)
 library(broom)
 library(geosphere)
-#Contain crimes to one year, for each school find the distance to each crime only in that
-#district
 
+#Creates a perl executable for the read.xls function
+perl<-"C:/Strawberry/perl/bin/perl5.24.1.exe"
 
 #Elementary Schools
-account.elem<-read_excel("Accountability_SQRPratings_2016-2017_SchoolLevel.xls",sheet=2,skip=1)
-account.elem$SchoolID<-account.elem$`School ID`
+account.elem<-read.xls("D:/Documents/Accountability_SQRPratings_2016-2017_SchoolLevel.xls",sheet=2,skip=2,perl=perl)
+account.elem$SchoolID<-account.elem$School.ID
 
 #High Schools
-account.high<-read_excel("Accountability_SQRPratings_2016-2017_SchoolLevel.xls",sheet=3,skip=1)
-account.high$SchoolID<-account.high$`School ID`
+account.high<-read.xls("D:/Documents/Accountability_SQRPratings_2016-2017_SchoolLevel.xls",sheet=3,skip=2,perl=perl)
+account.high$SchoolID<-account.high$School.ID
+str(account.high)
 
 #Combination Schools
-account.combo<-read_excel("Accountability_SQRPratings_2016-2017_SchoolLevel.xls",sheet=4,skip=2)
-account.combo$SchoolID<-account.combo$`School ID`
+account.combo<-read.xls("D:/Documents/Accountability_SQRPratings_2016-2017_SchoolLevel.xls",sheet=4,skip=3,perl=perl)
+account.combo$SchoolID<-account.combo$School.ID
 
 #Option Schools
-account.option<-read_excel("Accountability_SQRPratings_2016-2017_SchoolLevel.xls",sheet=3,skip=1)
-account.option$SchoolID<-account.option$`School ID`
+account.option<-read.xls("D:/Documents/Accountability_SQRPratings_2016-2017_SchoolLevel.xls",sheet=3,skip=2,perl=perl)
+account.option$SchoolID<-account.option$School.ID
 
 #ZIP code shape file
 zips<-readOGR("Boundaries - ZIP Codes/geo_export_f32b5a2b-4f79-41c5-8654-e2587746d820.shp","geo_export_f32b5a2b-4f79-41c5-8654-e2587746d820")
@@ -50,8 +52,6 @@ crimes2015<-read.csv("C:/Users/Nick/Dropbox/CPS Spatial/Crimes_-_2015.csv")
 #Final elementary school data
 elem.df<-merge(schools, account.elem, by="SchoolID")
 elem.df$Total.Points<-elem.df$`SQRP Total Points Earned`
-
-
 
 #Final high school data
 high.df<-merge(schools, account.high, by="SchoolID")
@@ -169,3 +169,40 @@ ps<-sapply(final.list,Polygon)
 help(sapply)
 str(new.list)
 help(over)
+
+#Beta regression
+install.packages("betareg")
+library(betareg)
+
+#Start by only working with continuous variables
+#Elementary schools
+account.elem$modPoints<-(account.elem$SQRP.Total.Points.Earned-1)/4
+account.elem$modPoints[account.elem$modPoints==1]<-.999
+
+elem_reg<-betareg(modPoints~Score+Score.1+Score.2+Score.3+Score.4+Score.5+Score.6+Score.7+Score.8+Score.9+Score.10+Score.11+Score.12+Score.13+Score.14+Score.15+Score.,data=account.elem)
+summary(elem_reg)
+
+#High Schools
+account.high$modPoints<-(account.high$SQRP.Total.Points.Earned-1)/4
+account.high$modPoints[account.high$modPoints==1]<-.999
+
+#Including Score.4 created an error
+high_reg<-betareg(modPoints~Score+Score.1+Score.2+Score.5+Score.+Score..1+Score..2+Score..3+Score..4+Score..5+Score..6+Score..8,data=account.high)
+summary(elem_reg)
+
+#Combo schools
+account.combo$modPoints<-(account.combo$SQRP.Total.Points.Earned-1)/4
+account.combo$modPoints[account.combo$modPoints==1]<-.999
+str(account.combo[,100:137])
+
+#Not including score.5, score.6, Score.9, Score.10, Score.11, score.13, score.14, score., score., score..1-11, score.16-21 
+combo_reg<-betareg(modPoints~Score+Score.1+Score.2+Score.3+Score.4+Score.7+Score.8+Score+Score.12,data=account.combo)
+summary(combo_reg)
+
+#Option 
+account.option$modPoints<-(account.option$SQRP.Total.Points.Earned-1)/4
+account.option$modPoints[account.option$modPoints==1]<-.999
+
+#Cannot include Score.4, also an issue with Score..7
+option_reg<-betareg(modPoints~Score+Score.1+Score.2+Score.5+Score..1+Score..2+Score..3+Score..4+Score..5+Score..6+Score..8,data=account.option)
+summary(option_reg)
