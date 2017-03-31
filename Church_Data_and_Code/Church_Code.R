@@ -145,7 +145,8 @@ ggmap(chimap) +
   ggtitle("Total homicides") +
   mytheme +
   scale_x_continuous(limits = c(-88,-87.4), expand = c(0, 0)) +
-  scale_y_continuous(limits = c(41.6,42.1), expand = c(0, 0))
+  scale_y_continuous(limits = c(41.6,42.1), expand = c(0, 0))+ 
+  geom_point(aes(lon,lat), data = church3, col=2, size=2) 
   
 ggmap(chimap) + 
   geom_polygon(aes(x=long, y=lat, group=group, fill=Homicide/Population), alpha=.8, col=1, size=.1, data=final.df) +
