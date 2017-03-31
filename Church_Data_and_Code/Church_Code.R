@@ -19,7 +19,7 @@ library(geosphere)
 #===========================================
 #Population data
 #===========================================
-pop.dat<-read.csv("C:/Users/Nick Fox/Downloads/2010_Census.csv", skip=1)
+pop.dat<-read.csv("~/educrime/Church_Data_and_Code/2010_Census.csv", skip=1)
 pop.dat <- read.csv("Church_Data_and_Code/2010_Census.csv", skip=1)
 
 #pop.final <- data.frame(id=as.character(pop.dat$GeogKey), population=pop.dat$Total.Population)
@@ -41,10 +41,10 @@ total.homicides[as.numeric(names(temp1))] <- temp1
 
 
 #Total crime data
-crime <- read.csv("C:/Users/Nick Fox/Downloads/Crimes_-_2015.csv")
+crime <- read.csv("D:/Downloads/Chicago Data/Crimes_-_2015.csv")
 crime$Primary.Type<-as.character(crime$Primary.Type)
 vio.crime<-crime[crime$Primary.Type==c("ASSAULT","BATTERY","ROBBERY","CRIM SEXUAL ASSAULT","HOMICIDE"),]
-vio.crime$id<-as.character(vio.crime$Community.Area-1)
+vio.crime$id<-as.character(vio.crime$Community.Area)
 
 
 
@@ -52,7 +52,7 @@ vio.crime$id<-as.character(vio.crime$Community.Area-1)
 #ZIP codes for a shapefile
 #===========================================
 comm_areas<-readOGR("C:/Users/Nick Fox/Downloads/Boundaries - Community Areas/geo_export_4fbea0cb-8eca-47d2-8dd9-ba6ccb5ed7cd.shp")
-comm_areas<-readOGR("Church_Data_and_Code/Boundaries - Community Areas/geo_export_4fbea0cb-8eca-47d2-8dd9-ba6ccb5ed7cd.shp")
+comm_areas<-readOGR("Church_Data_and_Code/Boundaries - Community Areas/geo_export_4fbea0cb-8eca-47d2-8dd9-ba6ccb5ed7cd.shp","geo_export_4fbea0cb-8eca-47d2-8dd9-ba6ccb5ed7cd")
 
 #polygon data frame
 poly.df1 <- tidy(comm_areas,region="area_numbe")
