@@ -19,7 +19,7 @@ library(geosphere)
 #===========================================
 #Population data
 #===========================================
-pop.dat<-read.csv("C:/Users/Nick Fox/Downloads/2010_Census.csv", skip=1)
+pop.dat<-read.csv("~/educrime/Church_Data_and_Code/2010_Census.csv", skip=1)
 pop.dat <- read.csv("Church_Data_and_Code/2010_Census.csv", skip=1)
 
 #pop.final <- data.frame(id=as.character(pop.dat$GeogKey), population=pop.dat$Total.Population)
@@ -41,18 +41,19 @@ total.homicides[as.numeric(names(temp1))] <- temp1
 
 
 #Total crime data
-crime <- read.csv("C:/Users/Nick Fox/Downloads/Crimes_-_2015.csv")
+crime <- read.csv("D:/Downloads/Chicago Data/Crimes_-_2015.csv")
 crime$Primary.Type<-as.character(crime$Primary.Type)
 vio.crime<-crime[crime$Primary.Type==c("ASSAULT","BATTERY","ROBBERY","CRIM SEXUAL ASSAULT","HOMICIDE"),]
-vio.crime$id<-as.character(vio.crime$Community.Area-1)
 
-
+total.viocrime <- rep(0,77)
+temp2 <- table(vio.crime$Community.Area)
+total.viocrime[as.numeric(names(temp2))] <- temp2
 
 #===========================================
 #ZIP codes for a shapefile
 #===========================================
 comm_areas<-readOGR("C:/Users/Nick Fox/Downloads/Boundaries - Community Areas/geo_export_4fbea0cb-8eca-47d2-8dd9-ba6ccb5ed7cd.shp")
-comm_areas<-readOGR("Church_Data_and_Code/Boundaries - Community Areas/geo_export_4fbea0cb-8eca-47d2-8dd9-ba6ccb5ed7cd.shp")
+comm_areas<-readOGR("Church_Data_and_Code/Boundaries - Community Areas/geo_export_4fbea0cb-8eca-47d2-8dd9-ba6ccb5ed7cd.shp","geo_export_4fbea0cb-8eca-47d2-8dd9-ba6ccb5ed7cd")
 
 #polygon data frame
 poly.df1 <- tidy(comm_areas,region="area_numbe")
@@ -70,8 +71,14 @@ comm_data <- data.frame(id=as.character(1:77),
                         Homicide=total.homicides
                         )
 
+comm_data1<- data.frame(id=as.character(1:77),
+                        Population=pop.dat$Total.Population,
+                        Violent_Crime=total.viocrime)
+
 #Final data sets
 final.df <- left_join(poly.df1, comm_data)
+
+final.df1 <- left_join(poly.df1, comm_data1)
 #===========================================
 
 
@@ -139,20 +146,22 @@ mytheme <- theme(plot.title=element_text(size=rel(1.5),face="bold"),
 
 ggmap(chimap) + 
 #ggplot() + 
-  geom_polygon(aes(x=long, y=lat, group=group, fill=Homicide), alpha=.8, col=1, size=.1, data=final.df) +
-  scale_fill_gradientn("", colors=tim.colors()) + 
+  geom_polygon(aes(x=long, y=lat, group=group, fill=Violent_Crime), alpha=.8, col=1, size=.1, data=final.df1) +
+  scale_fill_gradientn("", colors=tim.colors()) +
+  geom_point(aes(x=lon,y=lat),data=churches_final) +
   labs(x = "Longitude", y = "Latitude") + 
-  ggtitle("Total homicides") +
+  ggtitle("Total Violent Crime") +
   mytheme +
   scale_x_continuous(limits = c(-88,-87.4), expand = c(0, 0)) +
   scale_y_continuous(limits = c(41.6,42.1), expand = c(0, 0))+ 
   geom_point(aes(lon,lat), data = church3, col=2, size=2) 
   
 ggmap(chimap) + 
-  geom_polygon(aes(x=long, y=lat, group=group, fill=Homicide/Population), alpha=.8, col=1, size=.1, data=final.df) +
-  scale_fill_gradientn("per capita rate", colors=tim.colors()) + 
+  geom_polygon(aes(x=long, y=lat, group=group, fill=Violent_Crime/Population), alpha=.8, col=1, size=.1, data=final.df1) +
+  scale_fill_gradientn("per capita rate", colors=tim.colors()) +
+  geom_point(aes(x=lon,y=lat),data=churches_final) +
   labs(x = "Longitude", y = "Latitude") + 
-  ggtitle("Total homicides per capita") +
+  ggtitle("Total Violent Crime per Capita") +
   mytheme +
   scale_x_continuous(limits = c(-88,-87.4), expand = c(0, 0)) +
   scale_y_continuous(limits = c(41.6,42.1), expand = c(0, 0))
