@@ -1,0 +1,35 @@
+\begin{thebibliography}{6}
+\newcommand{\enquote}[1]{``#1''}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Balderama et~al.(2012)Balderama, Schoenberg, Murray, and
+  Rundel}]{Balderama12}
+Balderama, E., Schoenberg, F.~P., Murray, E., and Rundel, P.~W. (2012),
+  \enquote{Application of Branching Models in the Study of Invasive Species,}
+  \textit{Journal of the American Statistical Association}, 107, 467--476.
+
+\bibitem[{Delisle et~al.(2003)Delisle, Lavoie, Jean, and Lachance}]{Delisle03}
+Delisle, F., Lavoie, C., Jean, M., and Lachance, D. (2003),
+  \enquote{Reconstructing the spread of invasive plants: taking into account
+  biases associated with herbarium specimens,} \textit{Journal of
+  Biogeography}, 30, 1033--1042.
+
+\bibitem[{Hawkes(1971)}]{Hawkes71}
+Hawkes, A.~G. (1971), \enquote{Point Spectra of Some Mutually Exciting Point
+  Processes,} \textit{Journal of the Royal Statistical Society Series B}, 33,
+  438--443.
+
+\bibitem[{Higgins and Richardson(1996)}]{Higgins96}
+Higgins, S. and Richardson, D. (1996), \enquote{A review of models of alien
+  plant spread,} \textit{Ecological Modelling}, 87, 249--265.
+
+\bibitem[{Ogata(1988)}]{Ogata88}
+Ogata, Y. (1988), \enquote{Statistical Models for Earthquake Occurrences and
+  Residual Analysis for Point Processes,} \textit{Journal of the American
+  Statistical Association}, 83, 9--27.
+
+\bibitem[{Ogata(1998)}]{Ogata98}
+--- (1998), \enquote{Space-time Point-Process Models for Earthquake
+  Occurences,} \textit{The Institute of Statistical Mathematics}, 50, 379--402.
+
+\end{thebibliography}
