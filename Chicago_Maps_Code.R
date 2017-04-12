@@ -206,6 +206,82 @@ account.option$modPoints[account.option$modPoints==1]<-.999
 #Cannot include Score.4, also an issue with Score..7
 option_reg<-betareg(modPoints~Score+Score.1+Score.2+Score.5+Score..1+Score..2+Score..3+Score..4+Score..5+Score..6+Score..8,data=account.option)
 summary(option_reg)
-Contact GitHub API Training Shop Blog About
-© 2017 GitHub, Inc. Terms Privacy Security Status Help
 
+#Contact GitHub API Training Shop Blog About
+#© 2017 GitHub, Inc. Terms Privacy Security Status Help
+
+
+#Maps using attendance boundaries
+elem_bounds<-readOGR("D:/Downloads/Chicago Public Schools - Elementary School Attendance Boundaries SY1617/geo_export_81861cd7-922f-48b5-a361-c09561bc92f3.shp","geo_export_81861cd7-922f-48b5-a361-c09561bc92f3")
+elem_bounds_poly<-tidy(elem_bounds,region="school_id")
+
+#Subsets by violent crimes
+crime_comp_loc<-CC_2010_ES_SB[!is.na(CC_2010_ES_SB$Longitude),]
+
+crime_final<-crime_comp_loc[crime_comp_loc$Primary.Type==c("ASSAULT","BATTERY","ROBBERY","CRIM SEXUAL ASSAULT","HOMICIDE"),]
+
+#Creates a spatial points data frame for the crimes
+xy<-data.frame(longitude=crime_final$Longitude,latitude=crime_final$Latitude)
+proj4string(elem_bounds)
+
+crime_ids<-data.frame(id=crime_final$ID)
+spdf<-SpatialPointsDataFrame(coords=xy, data=crime_ids, proj4string=CRS("+proj=longlat +ellps=WGS84 +no_defs"))
+
+#Finds the number of crimes in each attendance boundary
+temp.crimebound<-over(spdf,elem_bounds)
+crime_bound_elem<-as.data.frame(table(temp.crimebound$school_id))
+colnames(crime_bound_elem)<-c("id","CrimeFreq")
+
+elem_crime_final<-left_join(crime_bound_elem,elem_bounds_poly)
+
+chimap<-get_map(location="Chicago",zoom=10,scale="auto",maptype="terrain")
+
+#Plots the results
+mytheme <- theme(plot.title=element_text(size=rel(1.5),face="bold"),
+                 axis.title=element_text(size=rel(1.2)),
+                 axis.text=element_text(size=rel(1.2)),
+                 #legend.title=element_blank(),
+                 legend.title=element_text(size=14,colour="black",face="bold"),
+                 legend.text=element_text(size=12,colour="black",face="bold"),
+                 # legend.background=element_rect(colour=NULL,fill="white"),
+                 legend.background=element_blank(),
+                 legend.justification=c(1,1),
+                 #legend.position=c(0.05,0.07),
+                 legend.position=c(.98,.98),
+                 legend.box="horizontal",
+                 #legend.margin=unit(.75,"cm"), 
+                 # legend.key=element_rect(colour="white"),
+                 legend.key=element_blank(),
+                 legend.key.size=unit(2,"lines"),
+                 legend.key.width=unit(.75,"cm"),
+                 legend.key.height=unit(.75,"cm"),
+                 legend.title.align=0,
+                 legend.text.align=0
+)
+ggmap(chimap) + 
+  geom_polygon(aes(x=long,y=lat,group=group,fill=CrimeFreq),col="black",data=elem_crime_final) +
+  scale_fill_gradientn("", colors=tim.colors()) +
+  labs(x="Longitude",y="Latitude") +
+  ggtitle("Violent Crime per School Attendance Boundary") +
+  mytheme +
+  scale_x_continuous(limits = c(-87.8,-87.5), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(41.64,42.05), expand = c(0, 0)) 
+
+#Repeats the processes using suspensions and expulsions
+CPS_2015_ES_SB$Total.Sus.Exp<-as.numeric(CPS_2015_ES_SB$Suspensions_ISS.OSS_N_2015)+as.numeric(CPS_2015_ES_SB$Expelled_N_2015)
+
+elem_bounds_poly$School_ID<-as.integer(elem_bounds_poly$School_ID)
+
+elem_susexp_final<-left_join(CPS_2015_ES_SB,elem_bounds_poly,by="School_ID")
+
+ggmap(chimap) + 
+  geom_polygon(aes(x=long,y=lat,group=group,fill=Total.Sus.Exp),col="black",data=elem_susexp_final) +
+  scale_fill_gradientn("", colors=tim.colors()) +
+  labs(x="Longitude",y="Latitude") +
+  ggtitle("Suspensions and Expulsions per Attendance Boundary") +
+  mytheme +
+  scale_x_continuous(limits = c(-87.8,-87.5), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(41.64,42.05), expand = c(0, 0)) 
+
+summary(CPS_2015_ES_SB$Total.Sus.Exp)
+susexp_bound_elem$SusExp
