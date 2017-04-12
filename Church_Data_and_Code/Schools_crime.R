@@ -124,30 +124,31 @@ sum(dist1 < 1)
 #===========================================================
 # Kernel Density Estimation
 #===========================================================
-library(MASS)
+library(splancs)
+?kernel2d
 
-disc.area <- dist1 < 1  #disc radius
-pixels <- 50  #resolution for kde2d
+disc.area <- boundary==1 #attendance boundary number
+pixels <- 50  #resolution for kernel2d
 
 
 
-getKde <- function(in_df, n=100, lims=c(range(in_df[,1]),range(in_df[,2]))){
-  require(MASS)
-  #pts <- as.matrix(in_df[,c('lon','lat')])
+getKde <- function(in_df, poly=, nx=20, ny20){
+  require(splancs)
   pts <- as.matrix(in_df[,1:2])
-  dens <- kde2d(pts[,1],pts[,2],n=n,lims=lims)
-  #dens$z <- dens$z#/(xyarea/degarea)
-  dens_df <- data.frame(expand.grid(dens$x,dens$y),z=c(dens$z))#*length(pts[,1]))
+  dens <- kernel2d(pts, poly=poly, nx=nx, ny=ny)
+  dens_df <- data.frame(expand.grid(dens$x,dens$y), z=c(dens$z))#*length(pts[,1]))
   colnames(dens_df) <- c('x','y','z')
   return(dens_df)
 }
 
-library(splancs)
+
+
 xrange = c(sbox(as.matrix(vcxy[disc.area,]))[1,1], sbox(as.matrix(vcxy[disc.area,]))[2,1])
 yrange = c(sbox(as.matrix(vcxy[disc.area,]))[1,2], sbox(as.matrix(vcxy[disc.area,]))[4,2])
 
 londpm <- diff(range(vcll$lon))/diff(range(vcxy$x))
 latdpm <- diff(range(vcll$lat))/diff(range(vcxy$y)) #degrees per meter
+
 lonrange <- c(min(vcll$lon[disc.area]) - (min(vcxy$x[disc.area])-xrange[1])*londpm,
               max(vcll$lon[disc.area]) + (xrange[2]-max(vcxy$x[disc.area]))*londpm)
 latrange <- c(min(vcll$lat[disc.area]) - (min(vcxy$y[disc.area])-yrange[1])*latdpm,
@@ -265,3 +266,37 @@ ggsave("Martin_kern.png")
 
 
 
+
+library(betareg)
+data(ReadingSkills)
+Y <- as.matrix(ReadingSkills[,1])
+n <- length(Y)
+X1 <- as.matrix(ReadingSkills[,2])
+for(i in 1:length(X1)){
+  X1 <- replace(X1,X1=="yes",1)
+  X1 <- replace(X1,X1=="no",0)
+}
+
+X0 <- rep(1, times=n)
+X1 <- as.numeric(X1)
+X2 <- as.matrix(ReadingSkills[,3])
+X3 <- X1*X2
+X <- cbind(X0,X1,X2,X3)
+Z0 <- X0
+Z <- cbind(X0,X1,X2)
+
+burn <- 0.2
+jump <- 10
+nsim <- 2000
+
+b_pri <- c(0,0,0,0)
+B_pri <- diag(100,nrow=ncol(X),ncol=ncol(X))
+g_pri <- c(0,0,0)
+G_pri <- diag(10,nrow=ncol(Z),ncol=ncol(Z))
+
+
+reading_skills<- Bayesianbetareg (Y,X,Z,nsim,b_pri,B_pri,g_pri,G_pri,
+                                  burn,jump,graph1=T, graph2=T )
+
+
+names(reading_skills)
