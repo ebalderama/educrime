@@ -89,6 +89,7 @@ dtypical <- function(y,Effort,muT,muGPD,distr=c("nb","poisson","lognormal"),size
 # Double-hurdle MCMC, main function
 #======================================================
 
+#The V's are eigenvectors and eigenvalues
 dhurdle <- function(Y,Effort,X,V=NULL,v=NULL,
                          lowEx=5,
                          name=NULL,

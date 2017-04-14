@@ -212,11 +212,11 @@ summary(option_reg)
 
 
 #Maps using attendance boundaries
-elem_bounds<-readOGR("D:/Downloads/Chicago Public Schools - Elementary School Attendance Boundaries SY1617/geo_export_81861cd7-922f-48b5-a361-c09561bc92f3.shp","geo_export_81861cd7-922f-48b5-a361-c09561bc92f3")
+elem_bounds<-readOGR("C:/Users/Nick Fox/Downloads/Chicago Public Schools - Elementary School Attendance Boundaries SY1617/geo_export_d7a88efc-9952-470f-b6b2-74d2fc56d631.shp","geo_export_d7a88efc-9952-470f-b6b2-74d2fc56d631")
 elem_bounds_poly<-tidy(elem_bounds,region="school_id")
 
 #Subsets by violent crimes
-crime_comp_loc<-CC_2010_ES_SB[!is.na(CC_2010_ES_SB$Longitude),]
+crime_comp_loc<-CC_2010_ES_SB[!is.na(CC_2015_ES_SB$Longitude),]
 
 crime_final<-crime_comp_loc[crime_comp_loc$Primary.Type==c("ASSAULT","BATTERY","ROBBERY","CRIM SEXUAL ASSAULT","HOMICIDE"),]
 
@@ -264,13 +264,14 @@ ggmap(chimap) +
   labs(x="Longitude",y="Latitude") +
   ggtitle("Violent Crime per School Attendance Boundary") +
   mytheme +
-  scale_x_continuous(limits = c(-87.8,-87.5), expand = c(0, 0)) +
+  scale_x_continuous(limits = c(-87.85,-87.5), expand = c(0, 0)) +
   scale_y_continuous(limits = c(41.64,42.05), expand = c(0, 0)) 
 
 #Repeats the processes using suspensions and expulsions
 CPS_2015_ES_SB$Total.Sus.Exp<-as.numeric(CPS_2015_ES_SB$Suspensions_ISS.OSS_N_2015)+as.numeric(CPS_2015_ES_SB$Expelled_N_2015)
-
-elem_bounds_poly$School_ID<-as.integer(elem_bounds_poly$School_ID)
+CPS_2015_ES_SB$susexp.per.attend<-CPS_2015_ES_SB$Total.Sus.Exp/CPS_2015_ES_SB$Totals_20th_2015
+  
+elem_bounds_poly$School_ID<-as.integer(elem_bounds_poly$id)
 
 elem_susexp_final<-left_join(CPS_2015_ES_SB,elem_bounds_poly,by="School_ID")
 
@@ -280,8 +281,6 @@ ggmap(chimap) +
   labs(x="Longitude",y="Latitude") +
   ggtitle("Suspensions and Expulsions per Attendance Boundary") +
   mytheme +
-  scale_x_continuous(limits = c(-87.8,-87.5), expand = c(0, 0)) +
+  scale_x_continuous(limits = c(-87.9,-87.5), expand = c(0, 0)) +
   scale_y_continuous(limits = c(41.64,42.05), expand = c(0, 0)) 
-
-summary(CPS_2015_ES_SB$Total.Sus.Exp)
-susexp_bound_elem$SusExp
+save(elem_crime_final,elem_susexp_final,file="C:/Users/Nick Fox/Documents/educrime/Chicago Data/Map_data.Rdata")
