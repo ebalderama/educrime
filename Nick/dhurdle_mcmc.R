@@ -101,6 +101,7 @@ sample_y <- function(Effort,pZ,pE,muGPD,sigGPD,xiGPD,muT,size){
 # Double-hurdle MCMC, main function
 #======================================================
 
+#The V's are eigenvectors and eigenvalues
 dhurdle <- function(Y,Effort,X,V=NULL,v=NULL,
                     lowEx=5,
                     name=NULL,
