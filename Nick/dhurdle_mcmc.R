@@ -119,7 +119,6 @@ dhurdle <- function(Y,Effort,X,V=NULL,v=NULL,
                     track.time=T,keepmiss=F,plot=F){
   
   
-  
   # ______________________________________________
   # Bookkeeping:
   #
@@ -221,7 +220,7 @@ dhurdle <- function(Y,Effort,X,V=NULL,v=NULL,
       # ______________________________________________ 
       # Fill in missings:
       #
-      Y[miss] <- sample_y(Effort[miss],pZ[miss],pE[miss],muGPD,sigGPD,xiGPD,muT[miss],size)
+      if(sum(miss)>0) Y[miss] <- sample_y(Effort[miss],pZ[miss],pE[miss],muGPD,sigGPD,xiGPD,muT[miss],size)
       
       # ______________________________________________ 
       # Keep track of number of metropolis attempts:
@@ -551,8 +550,9 @@ dhurdle <- function(Y,Effort,X,V=NULL,v=NULL,
   # ______________________________________________
   # Output
   # 
-  #Ymis <- sum(miss)
+  Ymis <- sum(miss)
   #if(keepmiss) Ymis <- colMeans(keep.Ymis) #keep only the means, otherwise too big.
+  if(keepmiss) Ymis <- keep.Ymis[-(1:burn),]
   prior <- rbind(c(beta_mn,alpha_mn,sig_mn,xi_mn,size_mn,tau_a),
                  c(beta_sd,alpha_sd,sig_sd,xi_sd,size_sd,tau_b))
   rownames(prior) <- c("par1","par2")
@@ -575,7 +575,7 @@ dhurdle <- function(Y,Effort,X,V=NULL,v=NULL,
   list(pars     = keep.pars[-(1:burn),],
        beta     = keep.beta[-(1:burn),,],
        alpha    = keep.alpha[-(1:burn),,spatial],
-       Ymis     = keep.Ymis[-(1:burn),],
+       Ymis     = Ymis,
        diags    = list(dev=keep.dev,
                        pD=pD,
                        DIC=Dbar+pD,
