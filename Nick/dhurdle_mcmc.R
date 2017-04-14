@@ -182,8 +182,10 @@ dhurdle <- function(Y,Effort,X,V=NULL,v=NULL,
   dimnames(keep.alpha)[[2]] <- rownames(alpha) <- colnames(V)
   dimnames(keep.alpha)[[3]] <- colnames(alpha) <- c("Zero","Typical","Extreme")
   
-  if(keepmiss) keep.Ymis <- matrix(0,iters,sum(miss))
-  colnames(keep.Ymis) <- as.character(which(miss))
+  if(keepmiss){
+    keep.Ymis <- matrix(0,iters,sum(miss))
+    colnames(keep.Ymis) <- as.character(which(miss))
+  }
   
   keep.dev <- track.ppo <- track.icpo <- 0
   
