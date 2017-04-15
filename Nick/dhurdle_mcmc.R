@@ -82,14 +82,14 @@ dtypical <- function(y,Effort,muT,muGPD,distr=c("nb","poisson","lognormal"),size
 
 
 
-
 ##For filling in missings, sample from likelihood
 sample_y <- function(Effort,pZ,pE,muGPD,sigGPD,xiGPD,muT,size){
-  Eff <- ifelse(Effort==0,1,Effort)
+  #Eff <- ifelse(Effort==0,1,Effort)
   samp <- rbinom(length(pZ),1,1-pZ)
   samp[samp>0] <- ifelse(runif(sum(samp)) < pE[samp>0],
-                         rgpd(sum(samp),muGPD,sigGPD,xiGPD),
-                         rnbinom(sum(samp),mu=Eff[samp>0]*muT[samp>0],size=size))
+                         round(rgpd(sum(samp),muGPD,sigGPD,xiGPD)),
+                         rnbinom(sum(samp),mu=Effort[samp>0]*muT[samp>0],size=size))
+  
   return(samp)
 }
 
@@ -114,7 +114,7 @@ dhurdle <- function(Y,Effort,X,V=NULL,v=NULL,
                     xi_mn=0,xi_sd=1, #priors
                     tau_a=0.5,tau_b=0.0005, #priors
                     fixsize=1,
-                    iters=100,burn=50,update=10,nthin=1,
+                    iters=100,burn=round(iters/4),update=round(iters/20,-1),nthin=1,
                     tune=list(z=1,t=1,e=1,s=20,rest=0.3),
                     track.time=T,keepmiss=F,plot=F){
   
@@ -451,7 +451,7 @@ dhurdle <- function(Y,Effort,X,V=NULL,v=NULL,
       plot(keep.beta[1:i,1,1],type="l",ylab="",main=bquote(beta[0]~Zero~prob~intercept))
       plot(keep.beta[1:i,1,2],type="l",ylab="",main=bquote(beta[0]~Typical~mean~intercept))
       if(is.finite(lowEx)){
-        plot(keep.beta[1:i,1,3],type="l",ylab="",main=bquote(beta[0]~Extreme~prob))
+        plot(keep.beta[1:i,1,3],type="l",ylab="",main=bquote(beta[0]~Extreme~prob~intercept))
         plot(keep.pars[1:i,2],type="l",ylab="",main=bquote(sigma[gpd]))
         plot(keep.pars[1:i,3],type="l",ylab="",main=bquote(xi[gpd]))
       }
@@ -459,14 +459,14 @@ dhurdle <- function(Y,Effort,X,V=NULL,v=NULL,
       #if(i <= burn){plot(keep.dev,type="l",ylab="Deviance",main=bquote(D==-2*sum(loglike)))
       #}else{plot(burn:i,keep.dev[burn:i],type="l",ylab="Deviance",main=bquote(D==-2*sum(loglike)))}
       
-      plot(keep.beta[1:i,2,1],type="l",ylab="",main=bquote(beta[1]~Zero~prob~SST))
-      plot(keep.beta[1:i,2,2],type="l",ylab="",main=bquote(beta[1]~Typical~mean~SST))
-      plot(keep.beta[1:i,3,2],type="l",ylab="",main=bquote(beta[1]~Typical~mean~CHL))
-      plot(keep.beta[1:i,4,2],type="l",ylab="",main=bquote(beta[1]~Typical~mean~DEP))
+      plot(keep.beta[1:i,2,1],type="l",ylab="",main=bquote(beta[1]~Zero~prob))
+      plot(keep.beta[1:i,2,2],type="l",ylab="",main=bquote(beta[1]~Typical~mean))
+      plot(keep.beta[1:i,3,2],type="l",ylab="",main=bquote(beta[2]~Typical~mean))
+      #plot(keep.beta[1:i,4,2],type="l",ylab="",main=bquote(beta[3]~Typical~mean))
       
-      #plot(pZ,log(Y/Effort+1),col=ifelse(Y==0,2,1),cex=ifelse(Y==0,0.1,0.2))
-      #abline(h=log(muGPD),col="blue")
-      #lines(density(pZ[Y==0]),col="red")
+      plot(pZ,log(Y/Effort+1),col=ifelse(Y==0,2,1),cex=ifelse(Y==0,0.1,0.2))
+      abline(h=log(muGPD),col="blue")
+      lines(density(pZ[Y==0]),col="red")
     }
     
     if(track.time & i%%update==0){

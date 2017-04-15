@@ -19,7 +19,12 @@ for (i in 1:dim(x)[2]){
 ##Converts X to a matrix then runs the double hurdle model
 x <- as.matrix(x)
 
-dh.model<-dhurdle(Y=y,Effort=CPS_2015_ES_SB$Totals_20th_2015,X=x,
-                  lowEx = 5,V=NULL,v=NULL,spatial=c(F,F,F),
-                  iters=10000, burn=1000, keepmiss=TRUE, plot=TRUE)
+school_pop <- CPS_2015_ES_SB$Totals_20th_2015
+school_pop[is.na(school_pop)] <- 1
+
+x <- x[,-c(3,8)]
+
+dh.model<-dhurdle(Y=y,Effort=school_pop,X=x,
+                  lowEx = Inf, V=NULL,v=NULL,spatial=c(F,F,F),
+                  iters=2000, burn=50, keepmiss=TRUE, plot=TRUE)
 
