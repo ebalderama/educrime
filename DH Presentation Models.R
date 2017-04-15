@@ -24,7 +24,11 @@ school_pop[is.na(school_pop)] <- 1
 
 x <- x[,-c(3,8)]
 
+dh.model<-dhurdle(Y=y[!is.na(y)],Effort=school_pop[!is.na(y)],X=x[!is.na(y),],
+                  lowEx = Inf, V=NULL,v=NULL,spatial=c(F,F,F),
+                  iters=2000, keepmiss=TRUE, plot=TRUE)
+
 dh.model<-dhurdle(Y=y,Effort=school_pop,X=x,
                   lowEx = Inf, V=NULL,v=NULL,spatial=c(F,F,F),
-                  iters=2000, burn=50, keepmiss=TRUE, plot=TRUE)
+                  iters=2000, keepmiss=TRUE, plot=TRUE)
 

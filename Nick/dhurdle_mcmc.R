@@ -80,6 +80,16 @@ dtypical <- function(y,Effort,muT,muGPD,distr=c("nb","poisson","lognormal"),size
 }
 
 
+#for sampling from truncated nbinom
+library(Runuran)
+rtnb <- function(mu,size=1,lower=1,upper=Inf){
+  if(lower-upper >= 0) return(1)
+  probs <- ifelse(1/(1+mu) >= 1, .9999, 1/(1+mu))
+  probs <- ifelse(probs <= 0, .0001, probs)
+  dis <- udnbinom(1,probs,lower,upper)
+  gener <- darid.new((dis))
+  return(ur(gener,1))
+}
 
 
 ##For filling in missings, sample from likelihood
@@ -88,8 +98,9 @@ sample_y <- function(Effort,pZ,pE,muGPD,sigGPD,xiGPD,muT,size){
   samp <- rbinom(length(pZ),1,1-pZ)
   samp[samp>0] <- ifelse(runif(sum(samp)) < pE[samp>0],
                          round(rgpd(sum(samp),muGPD,sigGPD,xiGPD)),
-                         rnbinom(sum(samp),mu=Effort[samp>0]*muT[samp>0],size=size))
-  
+                         sapply(Effort[samp>0]*muT[samp>0],rtnb,upper=muGPD-1))
+  #rnbinom(sum(samp),mu=Effort[samp>0]*muT[samp>0],size=size))
+
   return(samp)
 }
 
@@ -107,10 +118,10 @@ dhurdle <- function(Y,Effort,X,V=NULL,v=NULL,
                     name=NULL,
                     distr="nb",
                     spatial=c(T,T,F),
-                    beta_mn=0,beta_sd=1000, #priors
+                    beta_mn=0,beta_sd=100, #priors
                     alpha_mn=0,alpha_sd=1000, #priors
                     size_mn=0,size_sd=10, #priors
-                    sig_mn=2,sig_sd=5, #priors
+                    sig_mn=1,sig_sd=2, #priors
                     xi_mn=0,xi_sd=1, #priors
                     tau_a=0.5,tau_b=0.0005, #priors
                     fixsize=1,
@@ -465,8 +476,8 @@ dhurdle <- function(Y,Effort,X,V=NULL,v=NULL,
       #plot(keep.beta[1:i,4,2],type="l",ylab="",main=bquote(beta[3]~Typical~mean))
       
       plot(pZ,log(Y/Effort+1),col=ifelse(Y==0,2,1),cex=ifelse(Y==0,0.1,0.2))
-      abline(h=log(muGPD),col="blue")
-      lines(density(pZ[Y==0]),col="red")
+      #abline(h=log(muGPD),col="blue")
+      #lines(density(pZ[Y==0]),col="red")
     }
     
     if(track.time & i%%update==0){
