@@ -39,6 +39,10 @@ y1 <- CPS_2015_HS_SB$Expelled_N_2015
 
 x1 <- CPS_2015_HS_SB[,c(80,82,86,88,90,92,101,130)]
 
+x1$SQRP.Total <- apply(cbind(CPS_2015_HS_SB$SQRP_HS_Points_2015.x,CPS_2015_HS_SB$SQRP_HS_Points_2015.y), 1, sum, na.rm=T)
+
+x1$SQRP.Total[x1$SQRP.Total==0] <- NA
+
 #Performs mean imputation
 for (i in 1:dim(x1)[2]){
   x1[is.na(x1[,i]),i] <- mean(x1[,i], na.rm=TRUE)
@@ -52,7 +56,11 @@ x1 <- x1[!is.na(y1),]
 x1 <- as.matrix(x1)
 
 dh.model.HS <- dhurdle(Y=y1[!is.na(y1)],Effort=school_pop.1[!is.na(y1)],X=x1,
+                       lowEx = 5, V=NULL, v=NULL, spatial=c(F,F,F),
+                       iters=10000, keepmiss=FALSE, plot=TRUE)
+
+dh.model.HS1 <- dhurdle(Y=y1[!is.na(y1)],Effort=school_pop.1[!is.na(y1)],X=x1,
                        lowEx = Inf, V=NULL, v=NULL, spatial=c(F,F,F),
                        iters=10000, keepmiss=FALSE, plot=TRUE)
 
-
+names(x1)
