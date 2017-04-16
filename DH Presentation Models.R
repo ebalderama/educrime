@@ -33,11 +33,18 @@ dh.model<-dhurdle(Y=y,Effort=school_pop,X=x,
                   iters=2000, keepmiss=TRUE, plot=TRUE)
 
 #Uses the 2010 data
+library(dplyr)
 CPS_2015_HS_SB[,101] <- as.numeric(as.character(CPS_2015_HS_SB[,101]))
+
+crime.count <- as.data.frame(table(CC_2015_HS_SB$School_Boundary))
+names(crime.count) <- c("School_Boundary","Crime_Freq")
+crime.count$School_Boundary <- as.integer(crime.count$School_Boundary)
+
+CPS_2015_HS_SB <-left_join(CPS_2015_HS_SB,crime.count)
 
 y1 <- CPS_2015_HS_SB$Expelled_N_2015
 
-x1 <- CPS_2015_HS_SB[,c(80,82,86,88,90,92,101,130)]
+x1 <- CPS_2015_HS_SB[,c(80,82,86,88,90,92,101,130,499)]
 
 x1$SQRP.Total <- apply(cbind(CPS_2015_HS_SB$SQRP_HS_Points_2015.x,CPS_2015_HS_SB$SQRP_HS_Points_2015.y), 1, sum, na.rm=T)
 
@@ -57,10 +64,11 @@ x1 <- as.matrix(x1)
 
 dh.model.HS <- dhurdle(Y=y1[!is.na(y1)],Effort=school_pop.1[!is.na(y1)],X=x1,
                        lowEx = 5, V=V_HS, v=v_HS, spatial=c(F,F,F),
-                       iters=10000, keepmiss=FALSE, plot=TRUE)
+                       iters=10000, burn=1000, keepmiss=FALSE, plot=TRUE)
 
 dh.model.HS1 <- dhurdle(Y=y1[!is.na(y1)],Effort=school_pop.1[!is.na(y1)],X=x1,
                        lowEx = Inf, V=V_HS, v=v_HS, spatial=c(F,F,F),
-                       iters=10000, keepmiss=FALSE, plot=TRUE)
+                       iters=10000, burn=1000, keepmiss=FALSE, plot=TRUE)
 
+dh.model.HS1$alpha[,1,0]
 
