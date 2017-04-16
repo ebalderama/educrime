@@ -56,11 +56,11 @@ x1 <- x1[!is.na(y1),]
 x1 <- as.matrix(x1)
 
 dh.model.HS <- dhurdle(Y=y1[!is.na(y1)],Effort=school_pop.1[!is.na(y1)],X=x1,
-                       lowEx = 5, V=NULL, v=NULL, spatial=c(F,F,F),
+                       lowEx = 5, V=V_HS, v=v_HS, spatial=c(F,F,F),
                        iters=10000, keepmiss=FALSE, plot=TRUE)
 
 dh.model.HS1 <- dhurdle(Y=y1[!is.na(y1)],Effort=school_pop.1[!is.na(y1)],X=x1,
-                       lowEx = Inf, V=NULL, v=NULL, spatial=c(F,F,F),
+                       lowEx = Inf, V=V_HS, v=v_HS, spatial=c(F,F,F),
                        iters=10000, keepmiss=FALSE, plot=TRUE)
 
-names(x1)
+
