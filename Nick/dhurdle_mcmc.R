@@ -96,15 +96,27 @@ rtnb <- function(mu,size=1,lower=1,upper=Inf){
 sample_y <- function(Effort,pZ,pE,muGPD,sigGPD,xiGPD,muT,size){
   #Eff <- ifelse(Effort==0,1,Effort)
   samp <- rbinom(length(pZ),1,1-pZ)
-  samp[samp>0] <- ifelse(runif(sum(samp)) < pE[samp>0],
-                         round(rgpd(sum(samp),muGPD,sigGPD,xiGPD)),
-                         sapply(Effort[samp>0]*muT[samp>0],rtnb,upper=muGPD-1))
-  #rnbinom(sum(samp),mu=Effort[samp>0]*muT[samp>0],size=size))
+  
+  if(muGPD == 1){
+    samp[samp>0] <- round(rgpd(sum(samp),muGPD,sigGPD,xiGPD))
+  }
+  if(muGPD == Inf){
+    samp[samp>0] <- sapply(Effort[samp>0]*muT[samp>0],rtnb,upper=muGPD-1)
+    #rnbinom(sum(samp),mu=Effort[samp>0]*muT[samp>0],size=size))
+  }
+  if(1 < muGPD & muGPD < Inf){
+    samp[samp>0] <- ifelse(runif(sum(samp)) < pE[samp>0],
+                           round(rgpd(sum(samp),muGPD,sigGPD,xiGPD)),
+                           sapply(Effort[samp>0]*muT[samp>0],rtnb,upper=muGPD-1))
+  }
 
   return(samp)
 }
 
 
+#sample_y <- function(Effort,pZ,pE,muGPD,sigGPD,xiGPD,muT,size){
+#  rnbinom(length(Effort),mu=Effort*muT,size=size)
+#}
 
 
 
@@ -135,6 +147,7 @@ dhurdle <- function(Y,Effort,X,V=NULL,v=NULL,
   #
   start.time <- proc.time()
   cat(name,"Begin timer:",(proc.time()-start.time)[1:3])
+  X <- cbind(1,X)
   N <- nrow(X)
   p <- ncol(X)
   q <- length(v)
