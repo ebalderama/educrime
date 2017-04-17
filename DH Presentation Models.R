@@ -56,11 +56,17 @@ for (i in 1:dim(x1)[2]){
 }
 
 school_pop.1 <- CPS_2015_HS_SB$Totals_20th_2015
-school_pop.1[is.na(school_pop.1)] <- mean(school_pop.1)
+school_pop.1[is.na(school_pop.1)] <- mean(school_pop.1, na.rm=T)
 
-x1 <- x1[!is.na(y1),]
+#x1 <- x1[!is.na(y1),]
 
 x1 <- as.matrix(x1)
+
+dh.model.HS <- dhurdle(Y=y1,Effort=school_pop.1,X=x1,
+                       lowEx = 5, V=V_HS, v=v_HS, spatial=c(F,F,F),
+                       iters=10000, burn=1000, keepmiss=FALSE, plot=TRUE)
+
+
 
 dh.model.HS <- dhurdle(Y=y1[!is.na(y1)],Effort=school_pop.1[!is.na(y1)],X=x1,
                        lowEx = 5, V=V_HS, v=v_HS, spatial=c(F,F,F),
