@@ -85,6 +85,10 @@ V_ES <- V_ES[,1:15]
 v_HS <- v_HS[1:15]
 V_HS <- V_HS[,1:15]
 
+V_HS <- as.data.frame(V_HS)
+V_HS$School_Boundary <- 1:57
+
+CPS_2015_HS_SB <- left_join(CPS_2015_HS_SB,V_HS)
 
 #===============================================
 #Visualize the eigenvectors

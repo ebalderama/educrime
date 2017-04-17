@@ -212,24 +212,24 @@ summary(option_reg)
 
 
 #Maps using attendance boundaries
-elem_bounds<-readOGR("C:/Users/Nick Fox/Downloads/Chicago Public Schools - Elementary School Attendance Boundaries SY1617/geo_export_d7a88efc-9952-470f-b6b2-74d2fc56d631.shp","geo_export_d7a88efc-9952-470f-b6b2-74d2fc56d631")
+elem_bounds<-readOGR("Chicago Data/Chicago Public Schools - Elementary School Attendance Boundaries SY1617/geo_export_81861cd7-922f-48b5-a361-c09561bc92f3.shp","geo_export_81861cd7-922f-48b5-a361-c09561bc92f3")
 elem_bounds_poly<-tidy(elem_bounds,region="school_id")
 
 #Subsets by violent crimes
-crime_comp_loc<-CC_2010_ES_SB[!is.na(CC_2015_ES_SB$Longitude),]
+crime_comp_loc_ES<-CC_2015_ES_SB[!is.na(CC_2015_ES_SB$Longitude),]
 
-crime_final<-crime_comp_loc[crime_comp_loc$Primary.Type==c("ASSAULT","BATTERY","ROBBERY","CRIM SEXUAL ASSAULT","HOMICIDE"),]
+crime_final_ES<-crime_comp_loc_ES[crime_comp_loc_ES$Primary.Type==c("ASSAULT","BATTERY","ROBBERY","CRIM SEXUAL ASSAULT","HOMICIDE"),]
 
 #Creates a spatial points data frame for the crimes
-xy<-data.frame(longitude=crime_final$Longitude,latitude=crime_final$Latitude)
+xy_ES<-data.frame(longitude=crime_final_ES$Longitude,latitude=crime_final_ES$Latitude)
 proj4string(elem_bounds)
 
-crime_ids<-data.frame(id=crime_final$ID)
-spdf<-SpatialPointsDataFrame(coords=xy, data=crime_ids, proj4string=CRS("+proj=longlat +ellps=WGS84 +no_defs"))
+crime_ids_ES<-data.frame(id=crime_final_ES$ID)
+spdf_ES<-SpatialPointsDataFrame(coords=xy, data=crime_ids_ES, proj4string=CRS("+proj=longlat +ellps=WGS84 +no_defs"))
 
 #Finds the number of crimes in each attendance boundary
-temp.crimebound<-over(spdf,elem_bounds)
-crime_bound_elem<-as.data.frame(table(temp.crimebound$school_id))
+temp.crimebound_ES<-over(spdf_ES,elem_bounds)
+crime_bound_elem<-as.data.frame(table(temp.crimebound_ES$school_id))
 colnames(crime_bound_elem)<-c("id","CrimeFreq")
 
 elem_crime_final<-left_join(crime_bound_elem,elem_bounds_poly)
@@ -259,28 +259,70 @@ mytheme <- theme(plot.title=element_text(size=rel(1.5),face="bold"),
                  legend.text.align=0
 )
 ggmap(chimap) + 
-  geom_polygon(aes(x=long,y=lat,group=group,fill=CrimeFreq),col="black",data=elem_crime_final) +
+  geom_polygon(aes(x=long,y=lat,group=group,fill=CrimeFreq),col="black",alpha=0.5,data=elem_crime_final) +
   scale_fill_gradientn("", colors=tim.colors()) +
   labs(x="Longitude",y="Latitude") +
-  ggtitle("Violent Crime per School Attendance Boundary") +
+  ggtitle("Violent Crime",subtitle = "Elementary School Attendance Boundaries") +
   mytheme +
   scale_x_continuous(limits = c(-87.85,-87.5), expand = c(0, 0)) +
   scale_y_continuous(limits = c(41.64,42.05), expand = c(0, 0)) 
 
-#Repeats the processes using suspensions and expulsions
-CPS_2015_ES_SB$Total.Sus.Exp<-as.numeric(CPS_2015_ES_SB$Suspensions_ISS.OSS_N_2015)+as.numeric(CPS_2015_ES_SB$Expelled_N_2015)
-CPS_2015_ES_SB$susexp.per.attend<-CPS_2015_ES_SB$Total.Sus.Exp/CPS_2015_ES_SB$Totals_20th_2015
-  
-elem_bounds_poly$School_ID<-as.integer(elem_bounds_poly$id)
 
-elem_susexp_final<-left_join(CPS_2015_ES_SB,elem_bounds_poly,by="School_ID")
+
+#Maps using attendance boundaries
+hs_bounds<-readOGR("Chicago Data/Chicago Public Schools - High School Attendance Boundaries SY1617/geo_export_7f3862fd-0e72-4813-aed0-f14cc71e4fa4.shp","geo_export_7f3862fd-0e72-4813-aed0-f14cc71e4fa4")
+hs_bounds_poly<-tidy(hs_bounds,region="school_id")
+
+#Subsets by violent crimes
+crime_comp_loc_HS<-CC_2015_HS_SB[!is.na(CC_2015_HS_SB$Longitude),]
+
+crime_final_HS<-crime_comp_loc_HS[crime_comp_loc_HS$Primary.Type==c("ASSAULT","BATTERY","ROBBERY","CRIM SEXUAL ASSAULT","HOMICIDE"),]
+
+#Creates a spatial points data frame for the crimes
+xy_HS<-data.frame(longitude=crime_final_HS$Longitude,latitude=crime_final_HS$Latitude)
+
+crime_ids_HS<-data.frame(id=crime_final_HS$ID)
+spdf_HS<-SpatialPointsDataFrame(coords=xy, data=crime_ids_HS, proj4string=CRS("+proj=longlat +ellps=WGS84 +no_defs"))
+
+#Finds the number of crimes in each attendance boundary
+temp.crimebound_HS<-over(spdf_HS,hs_bounds)
+crime_bound_hs<-as.data.frame(table(temp.crimebound$school_id))
+colnames(crime_bound_hs)<-c("id","CrimeCount")
+
+hs_crime_final<-left_join(crime_bound_hs,hs_bounds_poly)
 
 ggmap(chimap) + 
-  geom_polygon(aes(x=long,y=lat,group=group,fill=Total.Sus.Exp),col="black",data=elem_susexp_final) +
+  geom_polygon(aes(x=long,y=lat,group=group,fill=CrimeCount),col="black",alpha=0.5,data=hs_crime_final) +
   scale_fill_gradientn("", colors=tim.colors()) +
   labs(x="Longitude",y="Latitude") +
-  ggtitle("Suspensions and Expulsions per Attendance Boundary") +
+  ggtitle("Violent Crime", subtitle = "High School Attendance Boundary") +
   mytheme +
-  scale_x_continuous(limits = c(-87.9,-87.5), expand = c(0, 0)) +
+  scale_x_continuous(limits = c(-87.85,-87.5), expand = c(0, 0)) +
   scale_y_continuous(limits = c(41.64,42.05), expand = c(0, 0)) 
-save(elem_crime_final,elem_susexp_final,file="C:/Users/Nick Fox/Documents/educrime/Chicago Data/Map_data.Rdata")
+
+#Maps the number of expulsions in school boundaries
+CPS_2015_ES_SB$id <- as.character(CPS_2015_ES_SB$School_ID)
+
+expul_final_ES <- left_join(elem_bounds_poly,CPS_2015_ES_SB)
+
+ggmap(chimap) + 
+  geom_polygon(aes(x=long,y=lat,group=group,fill=Expelled_N_2015),col="black",alpha=0.5,data=expul_final_ES) +
+  scale_fill_gradientn("", colors=tim.colors()) +
+  labs(x="Longitude",y="Latitude") +
+  ggtitle("Expulsions",subtitle="Elementary School Attendance Boundary") +
+  mytheme +
+  scale_x_continuous(limits = c(-87.85,-87.5), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(41.64,42.05), expand = c(0, 0)) 
+
+CPS_2015_HS_SB$id <- as.character(CPS_2015_HS_SB$School_ID)
+
+expul_final_HS <- left_join(hs_bounds_poly,CPS_2015_HS_SB)
+
+ggmap(chimap) + 
+  geom_polygon(aes(x=long,y=lat,group=group,fill=Expelled_N_2015),col="black",alpha=0.5,data=expul_final_HS) +
+  scale_fill_gradientn("", colors=tim.colors()) +
+  labs(x="Longitude",y="Latitude") +
+  ggtitle("Expulsions",subtitle= "High School Attendance Boundary") +
+  mytheme +
+  scale_x_continuous(limits = c(-87.85,-87.5), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(41.64,42.05), expand = c(0, 0)) 
