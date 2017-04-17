@@ -102,7 +102,6 @@ x01 <- x01[!is.na(y01),]
 
 x1 <- as.matrix(x1)
 
-<<<<<<< HEAD
 x1 <- cbind(rep(1,nrow(x1)),x1)
 
 x01 <- as.matrix(x01)
@@ -119,6 +118,7 @@ for (i in 1:ncol(hs.evecs)){
 
 hs.evecs <- as.matrix(hs.evecs)
 #High School Expulsions
+
 dh.model.HS_exp <- dhurdle(Y=y1[!is.na(y1)],Effort=school_pop.1[!is.na(y1)],X=x1,
                            lowEx = 8, V=hs.evecs, v=v_HS, spatial=c(T,T,F),
                            iters=3000, burn=500, nthin=10, plot=TRUE)
@@ -126,17 +126,6 @@ dh.model.HS_exp <- dhurdle(Y=y1[!is.na(y1)],Effort=school_pop.1[!is.na(y1)],X=x1
 dh.model.HS_exp1 <- dhurdle(Y=y1[!is.na(y1)],Effort=school_pop.1[!is.na(y1)],X=x1,
                             lowEx = Inf, V=V_HS, v=v_HS, spatial=c(T,T,F),
                             iters=3000, burn=500, nthin=10, plot=TRUE)
-=======
-dh.model.HS <- dhurdle(Y=y1,Effort=school_pop.1,X=x1,
-                       lowEx = 5, V=V_HS, v=v_HS, spatial=c(F,F,F),
-                       iters=10000, burn=1000, keepmiss=FALSE, plot=TRUE)
-
-
-
-dh.model.HS <- dhurdle(Y=y1[!is.na(y1)],Effort=school_pop.1[!is.na(y1)],X=x1,
-                       lowEx = 5, V=V_HS, v=v_HS, spatial=c(F,F,F),
-                       iters=10000, burn=1000, keepmiss=FALSE, plot=TRUE)
->>>>>>> b89b8c88b6e3c0f64c4e60108889ce936a71bd16
 
 #High School Suspensions
 dh.model.HS_sus <- dhurdle(Y=y01[!is.na(y01)],Effort=school_pop.1[!is.na(y01)],X=x01,
