@@ -66,51 +66,49 @@ crime.temp <- CC_2015_HS_SB[CC_2015_HS_SB$Primary.Type==c("ASSAULT","BATTERY","R
 crime.count <- as.data.frame(table(crime.temp$School_Boundary))
 names(crime.count) <- c("School_Boundary","Crime_Freq")
 crime.count$School_Boundary <- as.integer(crime.count$School_Boundary)
-
+names(CPS_2015_HS_SB)
 CPS_2015_HS_SB <-left_join(CPS_2015_HS_SB,crime.count)
 
 y1 <- CPS_2015_HS_SB$Expelled_N_2015
 
-y01 <- as.numeric(CPS_2015_HS_SB$Suspensions_ISS.OSS_N_2015)
+#y01 <- as.numeric(CPS_2015_HS_SB$Suspensions_ISS.OSS_N_2015)
 
-x1 <- CPS_2015_HS_SB[,c(80,82,86,88,90,92,101,130,499)]
+x1 <- CPS_2015_HS_SB[,c(80,82,88,101,130,499)]
 
 x1$SQRP.Total <- apply(cbind(CPS_2015_HS_SB$SQRP_HS_Points_2015.x,CPS_2015_HS_SB$SQRP_HS_Points_2015.y), 1, sum, na.rm=T)
 
 x1$SQRP.Total[x1$SQRP.Total==0] <- NA
 
-x01 <- CPS_2015_HS_SB[,c(80,82,86,88,90,92,101,130,499)]
+#x01 <- CPS_2015_HS_SB[,c(80,82,86,88,90,92,101,130,499)]
 
-x01$SQRP.Total <- apply(cbind(CPS_2015_HS_SB$SQRP_HS_Points_2015.x,CPS_2015_HS_SB$SQRP_HS_Points_2015.y), 1, sum, na.rm=T)
+#x01$SQRP.Total <- apply(cbind(CPS_2015_HS_SB$SQRP_HS_Points_2015.x,CPS_2015_HS_SB$SQRP_HS_Points_2015.y), 1, sum, na.rm=T)
 
-x01$SQRP.Total[x01$SQRP.Total==0] <- NA
+#x01$SQRP.Total[x01$SQRP.Total==0] <- NA
 #Performs mean imputation
 for (i in 1:dim(x1)[2]){
   x1[is.na(x1[,i]),i] <- mean(x1[,i], na.rm=TRUE)
 }
 
-for (i in 1:dim(x01)[2]){
-  x01[is.na(x01[,i]),i] <- mean(x01[,i], na.rm=TRUE)
-}
+#for (i in 1:dim(x01)[2]){
+ # x01[is.na(x01[,i]),i] <- mean(x01[,i], na.rm=TRUE)
+#}
 
 school_pop.1 <- CPS_2015_HS_SB$Totals_20th_2015
 school_pop.1[is.na(school_pop.1)] <- mean(school_pop.1, na.rm=T)
-dim(x1)
-test1 <- x1[!is.na(y1),]
 
 #x1 <- x1[!is.na(y1),]
 x1 <- scale(as.matrix(x1))
 
 x1 <- cbind(rep(1,nrow(x1)),x1)
 
-x01 <- x01[!is.na(y01),]
+#x01 <- x01[!is.na(y01),]
 
-x01 <- as.matrix(x01)
+#x01 <- as.matrix(x01)
 
-x01 <- cbind(rep(1,nrow(x1)),x1)
+#x01 <- cbind(rep(1,nrow(x1)),x1)
 
 #Eigenvectors
-hs.evecs <- CPS_2015_HS_SB[,500:514]
+#hs.evecs <- CPS_2015_HS_SB[,500:514]
 
 #High School Expulsions
 dh.model.HS_exp <- dhurdle(Y=y1[!is.na(y1)],Effort=school_pop.1[!is.na(y1)],X=x1[!is.na(y1),],
