@@ -85,6 +85,13 @@ V_ES <- V_ES[,1:15]
 v_HS <- v_HS[1:15]
 V_HS <- V_HS[,1:15]
 
+
+V_ES <- as.data.frame(V_ES)
+V_ES$School_Boundary <- 1:357
+
+CPS_2015_ES_SB <- left_join(CPS_2015_ES_SB,V_ES)
+
+
 V_HS <- as.data.frame(V_HS)
 V_HS$School_Boundary <- 1:57
 
