@@ -492,7 +492,7 @@
 	\end{itemize}
 \vspace{0.7cm}
 
-\textbf {Elementary School Crime Frequency Coefficients}
+\textbf {Crime Regression Coefficients for Elementary School Models}
 
 \begin{figure}[h]
 \begin{tabular}{ll}
@@ -512,7 +512,7 @@
 \caption{Suspension Models for Elementary Schools}
 \end{figure}
 
-\textbf {High School Crime Frequency Coefficients}
+\textbf {Crime Regression Coefficients for High School Models}
 
 \begin{figure}[h]
 \begin{tabular}{ll}
@@ -644,7 +644,7 @@
 \begin{block}{Acknowledgements}
 %=============================================================%
 \begin{itemize}
-  \item Software Used: \includegraphics[width=.1cm,scale=.55]{miscPP.png}\ \ (\url{www.r-project.org}) 
+  \item Software Used: \includegraphics[width=1cm,scale=.55]{miscPP.png}\ \ (\url{www.r-project.org}) 
   \item Data obtained from the Chicago Data Portal and Chicago Public Schools Data Page
   \item Special thanks to the Loyola University Chicago Department of Mathematics and Statsitics
 \end{itemize}
