@@ -369,12 +369,6 @@
 \begin{block}{Model}
 %=============================================================%
 
-\bf Count Data Modelled Using a Poisson Distribution
-\vspace {.5mm}
-\begin{equation} y_{i} {\raise.17ex\hbox{$\scriptstyle\sim$}} Poisson(\lambda)
-\end{equation}
-
-
 \bf Priors for Beta and Alpha Parameters 
 \vspace {.5mm}
 \begin{equation} 
@@ -387,12 +381,14 @@
 \vspace {.5mm}
 
 \bf Negative Binomial and Generalized Pareto Distribution Double Hurdles Models
-\begin{equation} 
-  \begin{aligned}
-    log(\mu_{i}) = log(n_{i}) + \alpha_{i} + \textbf{X}\beta \\
-    \textbf{X}\beta = \beta_{0} + X_{1}\beta_{1} + ... + X_{n}\beta_{j}
-  \end{aligned}
-\end{equation}
+\begin{itemize}
+			\item[] {$\blue{\itbf{p}}$ \it = \textsf{P}(zero-count)}
+			\item[] $\qquad\qquad \logit(\blue{\itbf{p}}) = \bfX\bgamma$
+			\item[] {$\blue{\bmu}$ \it = mean of typical-count distribution.}
+			\item[] $\qquad\qquad\log(\blue{\bmu}) = \bfX\bbeta$
+			\item[] {$\blue{\itbf{q}}$ \it = P(large-count $|$ nonzero-count)}
+			\item[] $\qquad\qquad\logit(\blue{\itbf{q}}) = \bfX\bdelta$
+			\end{itemize}
 \end{block}
 %\vfill
 
@@ -418,21 +414,23 @@
 
 \begin{figure}[h]
 \begin{tabular}{ll}
-\includegraphics[width=12cm,scale=1]{C:/Users/Nick/Documents/educrime/Nick/ES_Crime.png}
+\includegraphics[width=11cm,scale=1]{C:/Users/Nick/Documents/educrime/Nick/ES_Crime.png}
 &
-\includegraphics[width=12cm,scale=1]{C:/Users/Nick/Documents/educrime/Nick/HS_Crime.png}
+\includegraphics[width=11cm,scale=1]{C:/Users/Nick/Documents/educrime/Nick/HS_Crime.png}
 \end{tabular}
 
 \end{figure}
 
 \begin{figure}[h]
 \begin{tabular}{ll}
-\includegraphics[width=12cm,scale=1]{C:/Users/Nick/Documents/educrime/Nick/ES_Expulsions.png}
+\includegraphics[width=11cm,scale=1]{C:/Users/Nick/Documents/educrime/Nick/ES_Expulsions.png}
 &
-\includegraphics[width=12cm,scale=1]{C:/Users/Nick/Documents/educrime/Nick/HS_Expulsions.png}
+\includegraphics[width=11cm,scale=1]{C:/Users/Nick/Documents/educrime/Nick/HS_Expulsions.png}
 \end{tabular}
 
 \end{figure}
+
+\vspace{3mm}
 
 \end{block}
 %\vfill
@@ -534,7 +532,7 @@
 \caption{Suspension Models for High Schools}
 \end{figure}
 
-\vspace{7mm}
+\vspace{8mm}
 
 
 
