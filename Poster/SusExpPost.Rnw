@@ -311,7 +311,7 @@
 %======================   HEADER   ===========================%
 %=============================================================%
 
-\title{\veryHuge The Association of Crime Occurrence on Rates of Suspensions and Expulsions in Chicago Public Schools Using Poisson Regression}
+\title{\veryHuge The Association of Crime Occurrence on Rates of Suspensions and Expulsions in Chicago Public Schools Using Double Hurdle Models}
 \author{\Large Nicholas Fox, \and John Cote, \and Dr.~Earvin Balderama}
 \institute[LUC]{\large Department of Mathematics \& Statistics, Loyola University Chicago, Chicago, IL, USA }
 \date[April 12, 2017]{April 12, 2017} %% I don't know where this goes (earvin)
@@ -383,11 +383,11 @@
 \bf Negative Binomial and Generalized Pareto Distribution Double Hurdles Models
 \begin{itemize}
 			\item[] {$\blue{\itbf{p}}$ \it = \textsf{P}(zero-count)}
-			\item[] $\qquad\qquad \logit(\blue{\itbf{p}}) = \bfX\bgamma$
+			\item[] $\qquad\qquad \logit(\blue{\itbf{p}}) = \textbf{log}(School.Pop) + \bfX\bgamma + \bfV\balpha$
 			\item[] {$\blue{\bmu}$ \it = mean of typical-count distribution.}
-			\item[] $\qquad\qquad\log(\blue{\bmu}) = \bfX\bbeta$
+			\item[] $\qquad\qquad\log(\blue{\bmu}) = \textbf{log}(School.Pop) + \bfX\bbeta + \bfV\balpha$
 			\item[] {$\blue{\itbf{q}}$ \it = P(large-count $|$ nonzero-count)}
-			\item[] $\qquad\qquad\logit(\blue{\itbf{q}}) = \bfX\bdelta$
+			\item[] $\qquad\qquad\logit(\blue{\itbf{q}}) = \textbf{log}(School.Pop) + \bfX\bdelta$
 			\end{itemize}
 \end{block}
 %\vfill
@@ -492,7 +492,7 @@
 	\end{itemize}
 \vspace{0.7cm}
 
-\textbf {Elementary School and Crime Frequencies}
+\textbf {Elementary School Crime Frequency Coefficients}
 
 \begin{figure}[h]
 \begin{tabular}{ll}
@@ -512,7 +512,7 @@
 \caption{Suspension Models for Elementary Schools}
 \end{figure}
 
-\textbf {High School and Crime Frequencies}
+\textbf {High School Crime Frequency Coefficients}
 
 \begin{figure}[h]
 \begin{tabular}{ll}
