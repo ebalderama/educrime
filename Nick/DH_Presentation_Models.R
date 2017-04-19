@@ -69,17 +69,86 @@ school_pop0 <- school_pop0[-unique(ind_SUS)]
 es.evecs0 <- es.evecs0[-unique(ind_SUS),]
 
 #Elementary school expulsion models
-dh.model.ES_exp<-dhurdle(Y=y,Effort=school_pop,X=x,
+dh.model.ES_exp1 <- dhurdle(Y=y,Effort=school_pop,X=x,
                   lowEx = 1, V=es.evecs,v=v_ES,spatial=c(T,T,F),
-                  iters=2000, burn=1000, nthin=10, plot=TRUE)
+                  iters=10000, burn=4000, nthin=10, plot=TRUE)
+
+dh.model.ES_exp95 <- dhurdle(Y=y,Effort=school_pop,X=x,
+                         lowEx = 3, V=es.evecs,v=v_ES,spatial=c(T,T,F),
+                         iters=10000, burn=4000, nthin=10, plot=TRUE)
+
+dh.model.ES_expINF <- dhurdle(Y=y,Effort=school_pop,X=x,
+                         lowEx = Inf, V=es.evecs,v=v_ES,spatial=c(T,T,F),
+                         iters=10000, burn=4000, nthin=10, plot=TRUE)
+
+dh.model.ES_exp1$diags$DIC
+mean(dh.model.ES_exp1$diags$cpo)
+mean(dh.model.ES_exp1$diags$ppo)
+
+dh.model.ES_exp95$diags$DIC
+mean(dh.model.ES_exp95$diags$cpo)
+mean(dh.model.ES_exp95$diags$ppo)
+
+dh.model.HS_expINF$diags$DIC
+mean(dh.model.ES_expINF$diags$cpo)
+mean(dh.model.ES_expINF$diags$ppo)
+
+temp.means1 <- vector()
+temp.means2 <- vector()
+for(i in 1:9){
+  temp.means1[i] <- mean(dh.model.ES_expINF$beta[,i,"Zero"])
+  temp.means2[i] <- mean(dh.model.ES_expINF$beta[,i,"Typical"])
+}
+colnames(x1)
+temp.means3 <- vector()
+for(i in 1:9){
+  temp.means3[i] <- mean(dh.model.ES_exp95$beta[,i,"Extreme"])
+}
+colnames(x)
+#Elementary EXP plots
+hist(dh.model.ES_exp95$beta[,9,"Typical"],xlab="",main="Crime Distribution for Typical Counts")
+abline(v=-7.57,col="red",lwd="5")
+
+plot(dh.model.ES_exp95$beta[,9,"Typical"],xlab="Iterations",ylab="Crime Frequency",main="Trace Plot for Typical Crime Counts", type="l")
+abline(h=-7.57,col="red",lwd="2")
+
+help(abline)
 
 #Elementary school suspension models
-dh.model.ES_sus<-dhurdle(Y=y0 ,Effort=school_pop0, X=x0,
+dh.model.ES_sus1 <- dhurdle(Y=y0 ,Effort=school_pop0, X=x0,
                          lowEx = 1, V=es.evecs0,v=v_ES,spatial=c(T,T,F),
-                         iters=3000, burn=500, nthin=10, plot=TRUE)
+                         iters=10000, burn=4000, nthin=10, plot=TRUE)
 
+dh.model.ES_sus95 <- dhurdle(Y=y0 ,Effort=school_pop0, X=x0,
+                            lowEx = 104, V=es.evecs0,v=v_ES,spatial=c(T,T,F),
+                            iters=10000, burn=4000, nthin=10, plot=TRUE)
+
+dh.model.ES_susINF <- dhurdle(Y=y0 ,Effort=school_pop0, X=x0,
+                            lowEx = 1, V=es.evecs0,v=v_ES,spatial=c(T,T,F),
+                            iters=10000, burn=4000, nthin=10, plot=TRUE)
+
+dh.model.ES_sus1$diags$DIC
+mean(dh.model.ES_sus1$diags$cpo)
+mean(dh.model.ES_sus1$diags$ppo)
+
+dh.model.ES_sus95$diags$DIC
+mean(dh.model.ES_sus95$diags$cpo)
+mean(dh.model.ES_sus95$diags$ppo)
+
+dh.model.HS_expINF$diags$DIC
+mean(dh.model.ES_susINF$diags$cpo)
+mean(dh.model.ES_susINF$diags$ppo)
+
+#Elementary SUS plots
+hist(dh.model.ES_sus1$beta[,9,"Extreme"],xlab="",main="Crime Distribution when Extreme Is Greater than 1")
+abline(v=83,col="red",lwd="5")
+
+plot(dh.model.ES_sus1$beta[,9,"Extreme"],xlab="Iterations",ylab="Crime Frequency",main="Trace Plot when Extreme is Greater than 1", type="l")
+abline(h=83,col="red",lwd=3)
+
+a.means <- vector()
 for (i in 1:15){
-  hist(dh.model.ES_exp$alpha[,i,"Zero"])
+  a.means[i] <- mean(dh.model.ES_expINF$alpha[,i,"Typical"], na.rm=TRUE)
 }
 
 z.means <- vector()
@@ -165,20 +234,99 @@ school_pop.01 <- school_pop.01[-unique(ind01)]
 hs.evecs01 <- hs.evecs01[-unique(ind01),]
 
 #High School Expulsions
-dh.model.HS_exp <- dhurdle(Y=y1, Effort=school_pop.1, X=x1,
+dh.model.HS_exp1 <- dhurdle(Y=y1, Effort=school_pop.1, X=x1,
                            lowEx = 1, V=hs.evecs, v=v_HS, spatial=c(T,T,F),
-                           iters=2000, burn=1000, nthin=10, plot=TRUE)
+                           iters=10000, burn=4000, nthin=10, plot=TRUE)
+
+dh.model.HS_exp95 <- dhurdle(Y=y1, Effort=school_pop.1, X=x1,
+                           lowEx = 8, V=hs.evecs, v=v_HS, spatial=c(T,T,F),
+                           iters=10000, burn=4000, nthin=10, plot=TRUE)
+
+dh.model.HS_expINF <- dhurdle(Y=y1, Effort=school_pop.1, X=x1,
+                            lowEx = Inf, V=hs.evecs, v=v_HS, spatial=c(T,T,F),
+                            iters=10000, burn=4000, nthin=10, plot=TRUE)
+#Summaries of important info
+dh.model.HS_exp1$diags$DIC
+mean(dh.model.HS_exp1$diags$cpo)
+mean(dh.model.HS_exp1$diags$ppo)
+
+dh.model.HS_exp95$diags$DIC
+mean(dh.model.HS_exp95$diags$cpo)
+mean(dh.model.HS_exp95$diags$ppo)
+
+dh.model.HS_expINF$diags$DIC
+mean(dh.model.HS_expINF$diags$cpo)
+mean(dh.model.HS_expINF$diags$ppo)
+
+#Plots for HS EXP
+plot(dh.model.HS_exp95$beta[,8,"Typical"],type='l',xlab="Iterations",ylab="Crime Frequency",main="Trace Plot for Typical Crime Counts")
+abline(h=19,col="red",lwd="3")
+
+hist(dh.model.HS_exp95$beta[,8,"Typical"],xlab="",main="Crime Distribution for Typical Counts")
+abline(v=19, col="red",lwd = "5")
 
 
 #High School Suspensions
-dh.model.HS_sus <- dhurdle(Y=y01,Effort=school_pop.01,X=x01,
+dh.model.HS_sus1 <- dhurdle(Y=y01,Effort=school_pop.01,X=x01,
                            lowEx = 1, V=hs.evecs01, v=v_HS, spatial=c(T,T,F),
-                           iters=2000, burn=1000, nthin=10, plot=TRUE)
+                           iters=10000, burn=4000, nthin=10, plot=TRUE)
 
+dh.model.HS_sus95 <- dhurdle(Y=y01,Effort=school_pop.01,X=x01,
+                            lowEx = 85, V=hs.evecs01, v=v_HS, spatial=c(T,T,F),
+                            iters=10000, burn=4000, nthin=10, plot=TRUE)
+
+dh.model.HS_susINF <- dhurdle(Y=y01,Effort=school_pop.01,X=x01,
+                            lowEx = Inf, V=hs.evecs01, v=v_HS, spatial=c(T,T,F),
+                            iters=10000, burn=4000, nthin=10, plot=TRUE)
+
+dh.model.HS_sus1$diags$DIC
+mean(dh.model.HS_sus1$diags$cpo)
+mean(dh.model.HS_sus1$diags$ppo)
+
+#Plots for HS SUS
+hist(dh.model.HS_sus95$beta[,7,"Typical"], xlab="",main="Crime Distribution for Typical Counts")
+abline(v=7.25,col="red",lwd="5")
+
+plot(dh.model.HS_sus95$beta[,7,"Typical"],xlab="Iterations",ylab="Crime Frequency",main="Trace Plot for Typical Counts", type='l')
+abline(h=7.25,col="red",lwd="3")
 
 z.means1 <- vector()
 t.means1 <- vector()
+
 for (i in 1:8){
-  z.means1[i] <- mean(dh.model.HS_exp$beta[,i,"Zero"])
-  t.means1[i] <- mean(dh.model.HS_exp$beta[,i,"Typical"])
+  z.means1[i] <- mean(dh.model.HS_exp95$beta[,i,"Zero"])
+  t.means1[i] <- mean(dh.model.HS_exp95$beta[,i,"Typical"])
 }
+colnames(x1)
+e.means <- vector()
+for (i in 1:8) {
+  e.means[i] <- mean(dh.model.HS_sus95$beta[,i,"Extreme"])
+}
+#Elem expul
+elem.exp.comps <- data.frame("DIC" = c(dh.model.ES_exp1$diags$DIC,dh.model.ES_exp95$diags$DIC,dh.model.ES_expINF$diags$DIC),
+                              "CPO" = c(mean(dh.model.ES_exp1$diags$cpo),mean(dh.model.ES_exp95$diags$cpo),mean(dh.model.ES_expINF$diags$cpo)),
+                              "PPO" = c(mean(dh.model.ES_exp1$diags$ppo),mean(dh.model.ES_exp95$diags$ppo),mean(dh.model.ES_expINF$diags$ppo)))
+rownames(elem.exp.comps) <- c("1","95","Extreme")
+
+#Elem Sus
+elem.sus.comps <- data.frame("DIC" = c(dh.model.ES_sus1$diags$DIC,dh.model.ES_sus95$diags$DIC,dh.model.ES_susINF$diags$DIC),
+                             "CPO" = c(mean(dh.model.ES_sus1$diags$cpo),mean(dh.model.ES_sus95$diags$cpo),mean(dh.model.ES_susINF$diags$cpo)),
+                             "PPO" = c(mean(dh.model.ES_sus1$diags$ppo),mean(dh.model.ES_sus95$diags$ppo),mean(dh.model.ES_susINF$diags$ppo)))
+rownames(elem.sus.comps) <- c("1","95","Extreme")
+
+#HighElem expul
+high.exp.comps <- data.frame("DIC" = c(dh.model.HS_exp1$diags$DIC,dh.model.HS_exp95$diags$DIC,dh.model.HS_expINF$diags$DIC),
+                             "CPO" = c(mean(dh.model.HS_exp1$diags$cpo),mean(dh.model.HS_exp95$diags$cpo),mean(dh.model.HS_expINF$diags$cpo)),
+                             "PPO" = c(mean(dh.model.HS_exp1$diags$ppo),mean(dh.model.HS_exp95$diags$ppo),mean(dh.model.HS_expINF$diags$ppo)))
+rownames(high.exp.comps) <- c("1","95","Extreme")
+
+#High Sus
+high.sus.comps <- data.frame("DIC" = c(dh.model.HS_sus1$diags$DIC,dh.model.HS_sus95$diags$DIC,dh.model.HS_susINF$diags$DIC),
+                             "CPO" = c(mean(dh.model.HS_sus1$diags$cpo),mean(dh.model.HS_sus95$diags$cpo),mean(dh.model.HS_susINF$diags$cpo)),
+                             "PPO" = c(mean(dh.model.HS_sus1$diags$ppo),mean(dh.model.HS_sus95$diags$ppo),mean(dh.model.HS_susINF$diags$ppo)))
+rownames(high.sus.comps) <- c("1","95","Extreme")
+
+write.csv(elem.exp.comps,file="D:/Documents/Elem_exp_comps.csv")
+write.csv(elem.sus.comps,file="D:/Documents/Elem_sus_comps.csv")
+write.csv(high.exp.comps,file="D:/Documents/High_exp_comps.csv")
+write.csv(high.sus.comps,file="D:/Documents/High_sus_comps.csv")

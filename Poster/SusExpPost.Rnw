@@ -386,7 +386,7 @@
 
 \vspace {.5mm}
 
-\bf Poisson Regression Model
+\bf Negative Binomial and Generalized Pareto Distribution Double Hurdles Models
 \begin{equation} 
   \begin{aligned}
     log(\mu_{i}) = log(n_{i}) + \alpha_{i} + \textbf{X}\beta \\
@@ -418,18 +418,18 @@
 
 \begin{figure}[h]
 \begin{tabular}{ll}
-\includegraphics[width=13cm,scale=1]{C:/Users/Nick/Documents/educrime/Nick/ES_Crime.png}
+\includegraphics[width=12cm,scale=1]{C:/Users/Nick/Documents/educrime/Nick/ES_Crime.png}
 &
-\includegraphics[width=13cm,scale=1]{C:/Users/Nick/Documents/educrime/Nick/HS_Crime.png}
+\includegraphics[width=12cm,scale=1]{C:/Users/Nick/Documents/educrime/Nick/HS_Crime.png}
 \end{tabular}
 
 \end{figure}
 
 \begin{figure}[h]
 \begin{tabular}{ll}
-\includegraphics[width=13cm,scale=1]{C:/Users/Nick/Documents/educrime/Nick/ES_Expulsions.png}
+\includegraphics[width=12cm,scale=1]{C:/Users/Nick/Documents/educrime/Nick/ES_Expulsions.png}
 &
-\includegraphics[width=13cm,scale=1]{C:/Users/Nick/Documents/educrime/Nick/HS_Expulsions.png}
+\includegraphics[width=12cm,scale=1]{C:/Users/Nick/Documents/educrime/Nick/HS_Expulsions.png}
 \end{tabular}
 
 \end{figure}
@@ -470,28 +470,76 @@
 		\item[] Expulsions $\rightarrow$ Expulsions counts for each Chicago Public School
 	\end{itemize}
 \vspace{0.5cm}
-\red{Environmental} covariates:
+\red{Model Covariates} covariates:
 	\begin{itemize}
-		\item[] $\bfx_1-\bfx_5=$ Ethnicity counts for schools; White, African American, Native American, Hispanic, Multiethnic, and Asian respectively
-		\item[] $\bfx_7=$ Number of misconducts per school
-		\item[] $\bfx_8=$ School quality score (Elemetary School Model)
-		\item[] $\bfx_9=$ PARCC average math score (Elementary School Model)
-		\item[] $\bfx_{10}=$ PARCC English Language Arts average score (Elementary School Model)
-		\item[] $\bfx_{11}=$ Crime counts based on school attendance boundary (Elementary School Model)
-		\item[] $\bfx_8=$ Average ACT composite score per school (High School Model)
-		\item[] $\bfx_9=$ Crime counts based on school attendance boundary (High School Model)
-		\item[] $\bfx_{10}=$ School quality score (High School Model)
+	  \item Common Covariates
+	    \begin{itemize}
+		    \item[] $\bfx_1-\bfx_3=$ Ethnicity counts for schools; White, African American, Hispanic respectively
+		    \item[] $\bfx_4=$ Number of misconducts per school
+		  \end{itemize}
+		\item Unique Elementary School Covariates
+		  \begin{itemize}
+		    \item[] $\bfx_5=$ School quality score 
+		    \item[] $\bfx_6=$ PARCC average math score 
+		    \item[] $\bfx_7=$ PARCC English Language Arts average score 
+		    \item[] $\bfx_8=$ Crime counts based on school attendance boundary 
+		  \end{itemize}
+		\item Unique High School Covariates
+		  \begin{itemize}
+		    \item[] $\bfx_5=$ Average ACT composite score per school 
+		    \item[] $\bfx_6=$ Crime counts based on school attendance boundary 
+		    \item[] $\bfx_7=$ School quality score 
+		  \end{itemize}
+		\item Spatial Random Effects are included for each model
 	\end{itemize}
 \vspace{0.7cm}
 
-\vspace{7.95cm}
+\textbf {Elementary School and Crime Frequencies}
 
+\begin{figure}[h]
+\begin{tabular}{ll}
+\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_exp_hist.png}
+&
+\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_exp_plot.png}
+\end{tabular}
+\caption{Expulsion Models for Elementary Schools}
+\end{figure}
 
+\begin{figure}[h]
+\begin{tabular}{ll}
+\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_sus_hist.png}
+&
+\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_sus_plot.png}
+\end{tabular}
+\caption{Suspension Models for Elementary Schools}
+\end{figure}
+
+\textbf {High School and Crime Frequencies}
+
+\begin{figure}[h]
+\begin{tabular}{ll}
+\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/HS_exp_hist.png}
+&
+\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/HS_exp_plot.png}
+\end{tabular}
+\caption{Expulsion Models for High Schools}
+\end{figure}
+
+\begin{figure}[h]
+\begin{tabular}{ll}
+\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/HS_sus_hist.png}
+&
+\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/HS_sus_plot.png}
+\end{tabular}
+\caption{Suspension Models for High Schools}
+\end{figure}
+
+\vspace{7mm}
 
 
 
 \end{block}
-\vfill
+
 }
 \end{minipage}
 \end{beamercolorbox}
@@ -509,6 +557,30 @@
 %=============================================================%
 %=============================================================%
 %=============================================================%
+%=============================================================%
+\begin{block}{Model Diagnostics}
+%=============================================================%
+\begin{figure}[h]
+\begin{tabular}{ll}
+\includegraphics[width=10cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_exp.png}
+&
+\includegraphics[width=10cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_sus.png}
+\end{tabular}
+\caption{Elemetary School Expulsion Diagnostic (left) and Suspension Diagnostics (right)}
+\end{figure}
+
+\begin{figure}[h]
+\begin{tabular}{ll}
+\includegraphics[width=10cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/High_exp.png}
+&
+\includegraphics[width=10cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/High_sus.png}
+\end{tabular}
+\caption{High School Expulsion Diagnostic (left) and Suspension Diagnostics (right)}
+\end{figure}
+	
+	
+\end{block}
+
 
 
 
@@ -516,36 +588,69 @@
 \begin{block}{Discussion of Results}
 %=============================================================%
 	
+\begin{itemize}
+  \item Demographics
+    \begin{itemize}
+      \item These factors were mostly insignificant
+      \item A couple were barely significant in a couple models, however overall not very important
+    \end{itemize}
+    
+  \item Test Scores
+    \begin{itemize}
+      \item Test scores were used to look at student performance and were used as a proxy for student motivation
+      \item Most significant when modelling the mean number of non-zero expulsion counts
+    \end{itemize}
+    
+  \item Misconducts
+    \begin{itemize}
+      \item The number of misconducts was significant in the majority of the models run 
+      \ This is expected, as with the more misconducts we expect more suspensions and expulsions 
+    \end{itemize}
+    
+  \item Quality Scores
+    \begin{itemize}
+      \item A quality score provided by CPS for each school
+      \item Found to be insignificant in the majority of the models
+    \end{itemize}
+    
+  \item Violent Crime Frequency
+    \begin{itemize}
+      \item Crime frequency was found to be significant for both suspensions and expulsions for most of the models
+      \item For most cases, it was found to be a positive relationship between the amount violent crime and the number of suspension and expulsions
+    \end{itemize}
+    
+  \item Spatial Random Effects
+    \begin{itemize}
+      \item This variable examined whether the occurance of a crime in one school boundary influenced crime in a neighboring school boundary
+      \item Found to be almost completely insignificant, implying there are not spatial influences between schools
+    \end{itemize}     
+\end {itemize}
 
-	
-	
-	
 \end{block}
-\vfill
+
 
 
 %=============================================================%
-\begin{block}{Current Work \& Future Considerations}
+\begin{block}{Future Considerations}
 %=============================================================%
-
+\begin{itemize}
+  \item Consider temporal factors as potentially affecting suspensions and expulsions
+  \item Consider more types of crime than just violent crime
+  \item Consider physical distances of crimes to a school
+\end{itemize}
 
 
 \end{block}
-\vfill
+
 %=============================================================%
 \begin{block}{Acknowledgements}
 %=============================================================%
-
-
-
-
-
+\begin{itemize}
+  \item Software Used: \includegraphics[width=.1cm,scale=.55]{miscPP.png}\ \ (\url{www.r-project.org}) 
+  \item Data obtained from the Chicago Data Portal and Chicago Public Schools Data Page
+  \item Special thanks to the Loyola University Chicago Department of Mathematics and Statsitics
+\end{itemize}
 \end{block}
-
-
-
-
-
 }
 \end{minipage}
 \end{beamercolorbox}
