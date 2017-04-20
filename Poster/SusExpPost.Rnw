@@ -496,18 +496,18 @@
 
 \begin{figure}[h]
 \begin{tabular}{ll}
-\includegraphics[width=7cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_exp_hist.png}
+\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_exp_hist.png}
 &
-\includegraphics[width=7cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_exp_plot.png}
+\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_exp_plot.png}
 \end{tabular}
 \caption{Expulsion Models for Elementary Schools}
 \end{figure}
 
 \begin{figure}[h]
 \begin{tabular}{ll}
-\includegraphics[width=7cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_sus_hist.png}
+\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_sus_hist.png}
 &
-\includegraphics[width=7cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_sus_plot.png}
+\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_sus_plot.png}
 \end{tabular}
 \caption{Suspension Models for Elementary Schools}
 \end{figure}
@@ -516,27 +516,27 @@
 
 \begin{figure}[h]
 \begin{tabular}{ll}
-\includegraphics[width=7cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/HS_exp_hist.png}
+\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/HS_exp_hist.png}
 &
-\includegraphics[width=7cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/HS_exp_plot.png}
+\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/HS_exp_plot.png}
 \end{tabular}
 \caption{Expulsion Models for High Schools}
 \end{figure}
 
 \begin{figure}[h]
 \begin{tabular}{ll}
-\includegraphics[width=7cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/HS_sus_hist.png}
+\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/HS_sus_hist.png}
 &
-\includegraphics[width=7cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/HS_sus_plot.png}
+\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/HS_sus_plot.png}
 \end{tabular}
 \caption{Suspension Models for High Schools}
 \end{figure}
 
 \begin{itemize}
-  \item \textbf{Interpretation Example:} A parameter estimate of 7.25 has a 1408 multiplicative effect on the mean number of suspensions
+  \item \textbf{Interpretation Example:} A parameter estimate of -0.52 has a .594 multiplicative effect on the probability of a zero count for high school suspensions
 \end{itemize}
 
-
+\vspace{16mm}
 \end{block}
 
 }
@@ -614,8 +614,8 @@
     
   \item Violent Crime Frequency
     \begin{itemize}
-      \item Crime frequency was found to be significant for both suspensions and expulsions for most of the models
-      \item For most cases, it was found to be a positive relationship between the amount violent crime and the number of suspension and expulsions
+      \item Crime frequency was found to be mostly insignificant for zero counts of suspensions and expulsions
+      \item Found to have a positive relationship between the amount violent crime and the mean number of suspension and expulsions for most cases
     \end{itemize}
     
   \item Spatial Random Effects
