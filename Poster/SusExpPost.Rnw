@@ -383,11 +383,11 @@
 \bf Negative Binomial and Generalized Pareto Distribution Double Hurdles Models
 \begin{itemize}
 			\item[] {$\blue{\itbf{p}}$ \it = \textsf{P}(zero-count)}
-			\item[] $\qquad\qquad \logit(\blue{\itbf{p}}) = \textbf{log}(School.Pop) + \bfX\bgamma + \bfV\balpha$
+			\item[] $\qquad\qquad \logit(\blue{\itbf{p}}) =  \bfX\bgamma + \bfV\balpha$
 			\item[] {$\blue{\bmu}$ \it = mean of typical-count distribution.}
 			\item[] $\qquad\qquad\log(\blue{\bmu}) = \textbf{log}(School.Pop) + \bfX\bbeta + \bfV\balpha$
 			\item[] {$\blue{\itbf{q}}$ \it = P(large-count $|$ nonzero-count)}
-			\item[] $\qquad\qquad\logit(\blue{\itbf{q}}) = \textbf{log}(School.Pop) + \bfX\bdelta$
+			\item[] $\qquad\qquad\logit(\blue{\itbf{q}}) = \bfX\bdelta$
 			\end{itemize}
 \end{block}
 %\vfill
@@ -430,7 +430,7 @@
 
 \end{figure}
 
-\vspace{3mm}
+\vspace{6mm}
 
 \end{block}
 %\vfill
@@ -462,12 +462,12 @@
 %Right: Uncertainty interval of estimate.
 
 	
-	\vspace{2mm}
  \red{Response} data:
 	\begin{itemize}
 		\item[] Expulsions $\rightarrow$ Expulsions counts for each Chicago Public School
+	  \item[] Suspensions $\rightarrow$ Suspension counts for each Chicago Public School
 	\end{itemize}
-\vspace{0.5cm}
+
 \red{Model Covariates} covariates:
 	\begin{itemize}
 	  \item Common Covariates
@@ -490,24 +490,24 @@
 		  \end{itemize}
 		\item Spatial Random Effects are included for each model
 	\end{itemize}
-\vspace{0.7cm}
+
 
 \textbf {Crime Regression Coefficients for Elementary School Models}
 
 \begin{figure}[h]
 \begin{tabular}{ll}
-\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_exp_hist.png}
+\includegraphics[width=7cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_exp_hist.png}
 &
-\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_exp_plot.png}
+\includegraphics[width=7cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_exp_plot.png}
 \end{tabular}
 \caption{Expulsion Models for Elementary Schools}
 \end{figure}
 
 \begin{figure}[h]
 \begin{tabular}{ll}
-\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_sus_hist.png}
+\includegraphics[width=7cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_sus_hist.png}
 &
-\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_sus_plot.png}
+\includegraphics[width=7cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/ES_sus_plot.png}
 \end{tabular}
 \caption{Suspension Models for Elementary Schools}
 \end{figure}
@@ -516,24 +516,25 @@
 
 \begin{figure}[h]
 \begin{tabular}{ll}
-\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/HS_exp_hist.png}
+\includegraphics[width=7cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/HS_exp_hist.png}
 &
-\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/HS_exp_plot.png}
+\includegraphics[width=7cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/HS_exp_plot.png}
 \end{tabular}
 \caption{Expulsion Models for High Schools}
 \end{figure}
 
 \begin{figure}[h]
 \begin{tabular}{ll}
-\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/HS_sus_hist.png}
+\includegraphics[width=7cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/HS_sus_hist.png}
 &
-\includegraphics[width=8cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/HS_sus_plot.png}
+\includegraphics[width=7cm,scale=1]{C:/Users/Nick/Documents/educrime/Poster/Nick Presentation figures/HS_sus_plot.png}
 \end{tabular}
 \caption{Suspension Models for High Schools}
 \end{figure}
 
-\vspace{8mm}
-
+\begin{itemize}
+  \item \textbf{Interpretation Example:} A parameter estimate of 7.25 has a 1408 multiplicative effect on the mean number of suspensions
+\end{itemize}
 
 
 \end{block}
@@ -576,7 +577,7 @@
 \caption{High School Expulsion Diagnostic (left) and Suspension Diagnostics (right)}
 \end{figure}
 	
-	
+
 \end{block}
 
 
@@ -619,7 +620,7 @@
     
   \item Spatial Random Effects
     \begin{itemize}
-      \item This variable examined whether the occurance of a crime in one school boundary influenced crime in a neighboring school boundary
+      \item This variable examined whether the occurance of a suspension or expulsion at a school affects a neighboring school
       \item Found to be almost completely insignificant, implying there are not spatial influences between schools
     \end{itemize}     
 \end {itemize}
@@ -648,6 +649,7 @@
   \item Data obtained from the Chicago Data Portal and Chicago Public Schools Data Page
   \item Special thanks to the Loyola University Chicago Department of Mathematics and Statsitics
 \end{itemize}
+\vspace{4mm}
 \end{block}
 }
 \end{minipage}
