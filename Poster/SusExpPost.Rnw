@@ -430,7 +430,7 @@
 
 \end{figure}
 
-\vspace{6mm}
+\vspace{8mm}
 
 \end{block}
 %\vfill
@@ -533,10 +533,10 @@
 \end{figure}
 
 \begin{itemize}
-  \item \textbf{Interpretation Example:} A parameter estimate of -0.52 has a .594 multiplicative effect on the probability of a zero count for high school suspensions
+  \item \textbf{Interpretation Example:} The odds of having zero expulsions decreases by 40.6\% for every one standard deviation increase in the amount of crime
 \end{itemize}
 
-\vspace{16mm}
+\vspace{19.5mm}
 \end{block}
 
 }
@@ -603,7 +603,7 @@
   \item Misconducts
     \begin{itemize}
       \item The number of misconducts was significant in the majority of the models run 
-      \ This is expected, as with the more misconducts we expect more suspensions and expulsions 
+      \item This is expected, as with more misconducts we expect more suspensions and expulsions 
     \end{itemize}
     
   \item Quality Scores
@@ -620,7 +620,7 @@
     
   \item Spatial Random Effects
     \begin{itemize}
-      \item This variable examined whether the occurance of a suspension or expulsion at a school affects a neighboring school
+      \item This variable examined whether the occurrence of a suspension or expulsion at a school affects a neighboring school
       \item Found to be almost completely insignificant, implying there are not spatial influences between schools
     \end{itemize}     
 \end {itemize}
@@ -649,7 +649,7 @@
   \item Data obtained from the Chicago Data Portal and Chicago Public Schools Data Page
   \item Special thanks to the Loyola University Chicago Department of Mathematics and Statsitics
 \end{itemize}
-\vspace{4mm}
+
 \end{block}
 }
 \end{minipage}
