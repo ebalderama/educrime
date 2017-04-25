@@ -225,7 +225,7 @@ xy_ES<-data.frame(longitude=crime_final_ES$Longitude,latitude=crime_final_ES$Lat
 proj4string(elem_bounds)
 
 crime_ids_ES<-data.frame(id=crime_final_ES$ID)
-spdf_ES<-SpatialPointsDataFrame(coords=xy, data=crime_ids_ES, proj4string=CRS("+proj=longlat +ellps=WGS84 +no_defs"))
+spdf_ES<-SpatialPointsDataFrame(coords=xy_ES, data=crime_ids_ES, proj4string=CRS("+proj=longlat +ellps=WGS84 +no_defs"))
 
 #Finds the number of crimes in each attendance boundary
 temp.crimebound_ES<-over(spdf_ES,elem_bounds)
@@ -233,6 +233,7 @@ crime_bound_elem<-as.data.frame(table(temp.crimebound_ES$school_id))
 colnames(crime_bound_elem)<-c("id","CrimeFreq")
 
 elem_crime_final<-left_join(crime_bound_elem,elem_bounds_poly)
+
 
 chimap<-get_map(location="Chicago",zoom=10,scale="auto",maptype="terrain")
 
@@ -305,6 +306,8 @@ CPS_2015_ES_SB$id <- as.character(CPS_2015_ES_SB$School_ID)
 
 expul_final_ES <- left_join(elem_bounds_poly,CPS_2015_ES_SB)
 
+expul_final_ES$Suspensions_ISS.OSS_N_2015 <- as.numeric(as.character(expul_final_ES$Suspensions_ISS.OSS_N_2015))
+
 ggmap(chimap) + 
   geom_polygon(aes(x=long,y=lat,group=group,fill=Expelled_N_2015),col="black",alpha=0.5,data=expul_final_ES) +
   scale_fill_gradientn("", colors=tim.colors()) +
@@ -314,9 +317,21 @@ ggmap(chimap) +
   scale_x_continuous(limits = c(-87.85,-87.5), expand = c(0, 0)) +
   scale_y_continuous(limits = c(41.64,42.05), expand = c(0, 0)) 
 
+ggmap(chimap) + 
+  geom_polygon(aes(x=long,y=lat,group=group,fill=Suspensions_ISS.OSS_N_2015),col="black",alpha=0.5,data=expul_final_ES) +
+  scale_fill_gradientn("", colors=tim.colors()) +
+  labs(x="Longitude",y="Latitude") +
+  ggtitle("Suspensions",subtitle="Elementary School Attendance Boundary") +
+  mytheme +
+  scale_x_continuous(limits = c(-87.85,-87.5), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(41.64,42.05), expand = c(0, 0)) 
+
+#High schools
 CPS_2015_HS_SB$id <- as.character(CPS_2015_HS_SB$School_ID)
 
 expul_final_HS <- left_join(hs_bounds_poly,CPS_2015_HS_SB)
+
+expul_final_HS$Suspensions_ISS.OSS_N_2015 <- as.numeric(as.character(expul_final_HS$Suspensions_ISS.OSS_N_2015))
 
 ggmap(chimap) + 
   geom_polygon(aes(x=long,y=lat,group=group,fill=Expelled_N_2015),col="black",alpha=0.5,data=expul_final_HS) +
@@ -326,3 +341,13 @@ ggmap(chimap) +
   mytheme +
   scale_x_continuous(limits = c(-87.85,-87.5), expand = c(0, 0)) +
   scale_y_continuous(limits = c(41.64,42.05), expand = c(0, 0)) 
+
+ggmap(chimap) + 
+  geom_polygon(aes(x=long,y=lat,group=group,fill=Suspensions_ISS.OSS_N_2015),col="black",alpha=0.5,data=expul_final_HS) +
+  scale_fill_gradientn("", colors=tim.colors()) +
+  labs(x="Longitude",y="Latitude") +
+  ggtitle("Suspensions",subtitle= "High School Attendance Boundary") +
+  mytheme +
+  scale_x_continuous(limits = c(-87.85,-87.5), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(41.64,42.05), expand = c(0, 0)) 
+
